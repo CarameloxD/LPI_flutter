@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'NavBar.dart';
+
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -8,7 +10,7 @@ class HomeScreen extends StatelessWidget {
           centerTitle: true,
           title: Text('UFP')
       ),
-      //drawer: NavBar(),
+      drawer: NavBar(),
     );
   }
 }
