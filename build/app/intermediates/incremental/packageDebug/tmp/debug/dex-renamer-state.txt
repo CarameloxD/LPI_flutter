@@ -1,0 +1,4 @@
+#Thu Mar 10 17:11:10 WET 2022
+base.0=/Users/miguelcarvalho/Desktop/Flutter Projects/sistema_presencas/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
