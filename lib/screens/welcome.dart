@@ -59,7 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Email',
+          'Student Number',
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -72,10 +72,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
-              hintText: 'Enter your Email',
+              hintText: 'Enter your Student Number',
               hintStyle: kHintTextStyle,
               prefixIcon: Icon(
-                Icons.email,
+                Icons.account_circle,
                 color: Colors.white,
               ),
             ),
@@ -123,7 +123,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _buildRememberMeCheckbox() {
     return Container(
-      height: 20.0,
+      height: 60.0,
       child: Row(
         children: <Widget>[
           Theme(
@@ -150,7 +150,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Widget _buildLoginBtn() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
+      padding: EdgeInsets.symmetric(vertical: 15.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,

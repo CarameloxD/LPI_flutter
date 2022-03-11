@@ -29,7 +29,13 @@ class SplashPage extends StatelessWidget{
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Center(
-                    child: Image.asset('assets/images/ufp.png')
+                    child: Column(
+                      children: [
+                        Image.asset('assets/images/ufp.png'),
+                        SizedBox(height: 25),
+                        new CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.green))
+                      ],
+                    )
                   )
                 ],
               )
