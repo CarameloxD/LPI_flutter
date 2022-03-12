@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_presencas/screens/theme.dart';
 import 'package:sistema_presencas/screens/welcome.dart';
 import '../utilities/jwt.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -74,7 +75,9 @@ class _NavBarState extends State<NavBar> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-            onTap: () => null,
+            onTap: (){
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=>theme()));
+            }
           ),
           ListTile(
             leading: Icon(Icons.description),

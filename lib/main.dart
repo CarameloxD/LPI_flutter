@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_presencas/screens/home.dart';
 import 'package:sistema_presencas/screens/welcome.dart';
 import 'package:sistema_presencas/screens/splashpage.dart';
 
