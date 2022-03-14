@@ -37,14 +37,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       if (jsonResponse != null) {
         state = 1;
         var token = json.decode(response.body)['message'];
-
-        //var profilePicture = json.decode(response.body)['profilePicture'];
-
-        //var type = json.decode(response.body)['userType'];
-
-        //await storage.write(key: 'jwt', value: token);
-        //await storage.write(key: 'profilePicture', value: profilePicture);
-        //await storage.write(key: 'userType', value: type);
       }
       return 1;
     } else {
@@ -53,7 +45,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       return 0;
     }
   }
-
+  _showDialog(context) {
+    return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Username or password wrong'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Try again!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
+  }
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +173,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             await attemptLogIn(username, password, context);
 
             if (state == 0) {
-              
+              _showDialog(context); //mensagem de erro ao dar login
             } else {
               Navigator.pushReplacement(
                 context,
