@@ -26,6 +26,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Future<int> attemptLogIn(
       String studentNumber, String password, BuildContext context) async {
+    print('TOUUUUUUUUUUU');
     final response = await http.post(Uri.parse('https://siws.ufp.pt/api/v1/login'),
         body:{
           "username": studentNumber,

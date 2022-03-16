@@ -16,7 +16,7 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   final storage = new FlutterSecureStorage();
-  var name = '', email = '';
+  var name = '', email = '', picture = '';
 
   void initState() {
     super.initState();
@@ -35,8 +35,8 @@ class _NavBarState extends State<NavBar> {
             accountEmail: Text("$email"),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                child: Image.network(
-                  'https://sic.pt/wp-content/uploads/2022/01/GettyImages-1350241729-scaled.jpg',
+                child: Image.asset(
+                  'assets/images/defaultPhoto.png',
                   fit: BoxFit.cover,
                   width: 90,
                   height: 90,
@@ -107,9 +107,12 @@ class _NavBarState extends State<NavBar> {
   getInfo() async {
     var n = await storage.read(key: 'name');
     var e = await storage.read(key: 'email');
+    var p = await storage.read(key: 'picture');
+
       setState(() {
         name = n!;
         email = e!;
+        picture = p!;
       });
   }
 }
