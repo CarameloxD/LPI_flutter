@@ -46,7 +46,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       return 0;
     }
   }
-
+  _showDialog(context) {
+    return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Username or password wrong'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Try again!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
+  }
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +174,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             await attemptLogIn(studentNumber, password, context);
 
             if (state == 0) {
-              
+              _showDialog(context); //mensagem de erro ao dar login
             } else {
               Navigator.pushReplacement(
                 context,
