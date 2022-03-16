@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'globals.dart' as globals;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sistema_presencas/screens/home.dart';
 import 'package:sistema_presencas/utilities/constants.dart';
+
+import 'homeTeacher.dart';
 
 
 class WelcomeScreen extends StatefulWidget {
@@ -33,7 +34,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       await storage.write(key: 'studentNumber', value: studentNumber);
-
       if (jsonResponse != null) {
         state = 1;
         await storage.write(key: "token", value: json.decode(response.body)['message']);
@@ -155,6 +155,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
 
   Widget _buildLoginBtn() {
     return Container(
@@ -175,11 +181,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
             if (state == 0) {
               _showDialog(context); //mensagem de erro ao dar login
-            } else {
+            } else if(isNumeric(studentNumber)) { // se o studentNumber for so numeros..
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => HomeScreen()),
+              );
+            }
+            else{ // senao..
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                  builder: (context) => HomeScreenTeacher()),
               );
             }
           }
