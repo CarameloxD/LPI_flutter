@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'globals.dart' as globals;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sistema_presencas/screens/home.dart';
 import 'package:sistema_presencas/utilities/constants.dart';
@@ -25,6 +24,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Future<int> attemptLogIn(
       String studentNumber, String password, BuildContext context) async {
+    print('TOUUUUUUUUUUU');
     final response = await http.post(Uri.parse('https://siws.ufp.pt/api/v1/login'),
         body:{
           "username": studentNumber,
