@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
-
+import 'globals.dart' as globals;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sistema_presencas/screens/home.dart';
 import 'package:sistema_presencas/utilities/constants.dart';
 
@@ -18,33 +18,26 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   bool _rememberMe = false;
   int state = 0;
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _studentNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _validate_username = false, _validate_password = false;
+  bool _validate_studentNumber = false, _validate_password = false;
+  final storage = new FlutterSecureStorage();
 
   Future<int> attemptLogIn(
-      String username, String password, BuildContext context) async {
-    final response = await http.post(
-        Uri.parse('https://siws.ufp.pt/api/v1/login'),
-        body:{ 
-          "username": username,
+      String studentNumber, String password, BuildContext context) async {
+    final response = await http.post(Uri.parse('https://siws.ufp.pt/api/v1/login'),
+        body:{
+          "username": studentNumber,
           "password": password
           });
-    var jsonResponse;
-    print(response.body);
     if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
+      var jsonResponse = json.decode(response.body);
+      await storage.write(key: 'studentNumber', value: studentNumber);
+
       if (jsonResponse != null) {
         state = 1;
+        await storage.write(key: "token", value: json.decode(response.body)['message']);
         var token = json.decode(response.body)['message'];
-
-        //var profilePicture = json.decode(response.body)['profilePicture'];
-
-        //var type = json.decode(response.body)['userType'];
-
-        //await storage.write(key: 'jwt', value: token);
-        //await storage.write(key: 'profilePicture', value: profilePicture);
-        //await storage.write(key: 'userType', value: type);
       }
       return 1;
     } else {
@@ -68,7 +61,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
-            controller: _usernameController,
+            controller: _studentNumberController,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
@@ -155,15 +148,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          var username = _usernameController.text;
+          var studentNumber = _studentNumberController.text;
           var password = _passwordController.text;
 
           setState(() {
             
           });
 
-          if (_validate_username != true) {
-            await attemptLogIn(username, password, context);
+          if (_validate_studentNumber != true) {
+            await attemptLogIn(studentNumber, password, context);
 
             if (state == 0) {
               
@@ -262,5 +255,4 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
-
 }

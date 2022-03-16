@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class theme extends StatefulWidget {
-  const theme({Key? key}) : super(key: key);
+import 'NavBar.dart';
+
+class Settings extends StatefulWidget {
+  const Settings({Key? key}) : super(key: key);
 
   @override
-  _themeState createState()=> _themeState();
+  _settingsState createState()=> _settingsState();
 }
 
-
-
-class _themeState extends State<theme> {
+class _settingsState extends State<Settings> {
   bool _isActive = false;
   ThemeData _dark = ThemeData(brightness: Brightness.dark);
   ThemeData _light = ThemeData(brightness: Brightness.light);
@@ -20,11 +20,11 @@ class _themeState extends State<theme> {
       theme: _isActive ? _dark : _light,
       home: Scaffold(
         appBar: AppBar(
-            title: Text("Mudar tema de fundo")
+            title: Text("Settings")
         ),
         body: Center(
           child: SwitchListTile(
-            title: Text('Ativar modo escuro'),
+            title: Text('Dark Mode'),
             activeColor: Colors.black,
             value: _isActive,
               onChanged: (value){
@@ -33,7 +33,8 @@ class _themeState extends State<theme> {
             });
           },
         )
-      )
+      ),
+        drawer: NavBar(),
      )
     );
   }

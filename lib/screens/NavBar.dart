@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sistema_presencas/screens/theme.dart';
-import 'package:sistema_presencas/screens/welcome.dart';
-import '../utilities/jwt.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sistema_presencas/screens/schedule.dart';
+import 'package:sistema_presencas/screens/settings.dart';
+import 'package:sistema_presencas/screens/welcome.dart';
+
+import 'home.dart';
 
 
 class NavBar extends StatefulWidget {
@@ -13,12 +15,12 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-
-  String picture = '', name = '', email = '';
+  final storage = new FlutterSecureStorage();
+  var name = '', email = '';
 
   void initState() {
     super.initState();
-    this.getData();
+    this.getInfo();
   }
 
   @override
@@ -29,8 +31,8 @@ class _NavBarState extends State<NavBar> {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('Miguel Carvalho'),
-            accountEmail: Text('40113@ufp.edu.pt'),
+            accountName: Text("$name"),
+            accountEmail: Text("$email"),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -50,9 +52,12 @@ class _NavBarState extends State<NavBar> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Favorites'),
-            onTap: () => null,
+              leading: Icon(Icons.favorite),
+              title: Text('Home'),
+              onTap: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => HomeScreen()));
+              }
           ),
           ListTile(
             leading: Icon(Icons.person),
@@ -63,8 +68,16 @@ class _NavBarState extends State<NavBar> {
             },
           ),
           ListTile(
+            leading: Icon(Icons.calendar_month),
+            title: Text('Schedule'),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => ScheduleScreen()));
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.share),
-            title: Text('Share'),
+            title: Text('Classes'),
             onTap: () => null,
           ),
           ListTile(
@@ -73,18 +86,13 @@ class _NavBarState extends State<NavBar> {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: (){
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=>theme()));
-            }
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => Settings()));
+              }
           ),
-          ListTile(
-            leading: Icon(Icons.description),
-            title: Text('Policies'),
-            onTap: () => null,
-          ),
-          Divider(),
           ListTile(
               title: Text('Exit'),
               leading: Icon(Icons.exit_to_app),
@@ -96,13 +104,12 @@ class _NavBarState extends State<NavBar> {
       ),
     );
   }
-
-  getData() async {
-    final storage = new FlutterSecureStorage();
-    var jwt = await storage.read(key: "jwt");
-    picture = (await storage.read(key: "picture"))!;
-    var results = parseJwtPayLoad(jwt!);
-    email = results['email'];
-    name = results['name'];
+  getInfo() async {
+    var n = await storage.read(key: 'name');
+    var e = await storage.read(key: 'email');
+      setState(() {
+        name = n!;
+        email = e!;
+      });
   }
 }
