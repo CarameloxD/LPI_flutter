@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:sistema_presencas/items/classItem.dart';
 import 'NavBar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
     this.getData();
   }
 
+  final List<String> _myList = List.generate(100, (index) => 'Product $index');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,47 +31,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         drawer: NavBar(),
         body: Container(
-          width: 300,
-          height: 300,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-              width: 3,
-            ),
-          ),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text("Subject"),
-                    Spacer(flex: 1),
-                    Text("$subject")
-                  ],
+              Text("Dia de hoje"),
+              Flexible(
+                child: Center(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return ClassItem();
+                    },
+                    itemCount: 2,
+                    separatorBuilder: (context, index) => const Divider(),
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text("Starting Time"),
-                    Spacer(flex: 1),
-                    Text("$startingTime")
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text("Ending Time"),
-                    Spacer(flex: 1),
-                    Text("$endingTime")
-                  ],
-                ),
-              ),
-
             ],
           ),
         )
