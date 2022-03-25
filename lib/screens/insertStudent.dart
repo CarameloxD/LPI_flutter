@@ -10,9 +10,10 @@ class insertStudent extends StatefulWidget {
 
 class _insertStudentState extends State<insertStudent> {
   final _formKey = GlobalKey<FormState>();
-  var _name = '', _email = '', _studentNumber = '';
+  var _name = '', _email = '', _studentNumber = 0;
 
-  Future<int> attemptInsert(String name, String email, String studentNumber,
+
+  Future<int> attemptInsert(String name, String email, int studentNumber,
       BuildContext context) async {
     print(name);
     print(email);
@@ -22,14 +23,17 @@ class _insertStudentState extends State<insertStudent> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'name': name,
           'email': email,
           'student_number': studentNumber
         }));
     print(response.body);
+    print(response.statusCode);
+
     if (response.statusCode == 201) {
       var jsonResponse = json.decode(response.body);
+      print("tou maninho");
       print(jsonResponse);
       return 1;
     } else {
@@ -82,7 +86,7 @@ class _insertStudentState extends State<insertStudent> {
                   return null;
                 }, onSaved: (value) {
                   setState(() {
-                    _studentNumber = value!;
+                    _studentNumber = int.parse(value!);
                   });
                 }),
                 Padding(
