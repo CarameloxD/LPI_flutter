@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sistema_presencas/screens/schedule.dart';
 import 'package:sistema_presencas/screens/settings.dart';
 import 'package:sistema_presencas/screens/welcome.dart';
+import 'package:sistema_presencas/screens/insertStudent.dart';
 
 import 'home.dart';
 
@@ -77,8 +78,11 @@ class _NavBarState extends State<NavBar> {
           ),
           ListTile(
             leading: Icon(Icons.share),
-            title: Text('Classes'),
-            onTap: () => null,
+            title: Text('Insert Student'),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => insertStudent()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.notifications),
