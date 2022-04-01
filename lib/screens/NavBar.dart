@@ -6,6 +6,7 @@ import 'package:sistema_presencas/screens/welcome.dart';
 import 'package:sistema_presencas/screens/insertStudent.dart';
 
 import 'home.dart';
+import 'insertClassroom.dart';
 
 
 class NavBar extends StatefulWidget {
@@ -82,6 +83,14 @@ class _NavBarState extends State<NavBar> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => insertStudent()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.share),
+            title: Text('Insert Classroom'),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => insertClassroom()));
             },
           ),
           ListTile(
