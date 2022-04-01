@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../utilities/constants.dart';
 import 'NavBar.dart';
 
 class insertStudent extends StatefulWidget {
@@ -33,8 +34,10 @@ class _insertStudentState extends State<insertStudent> {
 
     if (response.statusCode == 201) {
       var jsonResponse = json.decode(response.body);
-      print("tou maninho");
       print(jsonResponse);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Student inserted')),
+      );
       return 1;
     } else {
       print("Request has not been inserted correctly");
@@ -46,13 +49,19 @@ class _insertStudentState extends State<insertStudent> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(centerTitle: true, title: Text('Insert Student')),
-        drawer: NavBar(),
         body: Container(
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(padding: const EdgeInsets.symmetric(vertical: 5.0),),
+                Text(
+                  'Name',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
                 TextFormField(
                     // The validator receives the text that the user has entered.
                     validator: (value) {
@@ -65,6 +74,13 @@ class _insertStudentState extends State<insertStudent> {
                     _name = value!;
                   });
                 }),
+                Padding(padding: const EdgeInsets.symmetric(vertical: 5.0),),
+                Text(
+                  'Email',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
                 TextFormField(
                     // The validator receives the text that the user has entered.
                     validator: (value) {
@@ -77,6 +93,13 @@ class _insertStudentState extends State<insertStudent> {
                     _email = value!;
                   });
                 }),
+                Padding(padding: const EdgeInsets.symmetric(vertical: 5.0),),
+                Text(
+                  'Student number',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
                 TextFormField(
                     // The validator receives the text that the user has entered.
                     validator: (value) {
@@ -90,7 +113,7 @@ class _insertStudentState extends State<insertStudent> {
                   });
                 }),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
                   child: ElevatedButton(
                     onPressed: () async {
                       // Validate returns true if the form is valid, or false otherwise.

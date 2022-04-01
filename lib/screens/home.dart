@@ -62,13 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
       await storage.write(key: 'email', value: jsonResponse['data']['email']);
 
       setState(() {
-        subject = jsonResponse['schedule subject'];
-        startingTime = jsonResponse['schedule start'];
-        endingTime = jsonResponse['schedule end'];
+        subject = jsonResponse['subjectsName'];
+        startingTime = jsonResponse['schedulesStartingTime'];
+        endingTime = jsonResponse['schedulesEndingtime'];
       });
-      /*if(jsonResponse['data']['picture'] != null) {
-        await storage.write(key: 'picture', value: jsonResponse['data']['picture']);
-      }*/
     }
   }
 }

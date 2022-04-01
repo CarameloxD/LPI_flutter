@@ -6,7 +6,7 @@ import 'package:sistema_presencas/screens/welcome.dart';
 import 'package:sistema_presencas/screens/insertStudent.dart';
 
 import 'home.dart';
-import 'insertClassroom.dart';
+import 'insertMenu.dart';
 
 
 class NavBar extends StatefulWidget {
@@ -78,19 +78,11 @@ class _NavBarState extends State<NavBar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.share),
-            title: Text('Insert Student'),
+            leading: Icon(Icons.insert_drive_file),
+            title: Text('Insert Menu'),
             onTap: () {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => insertStudent()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.share),
-            title: Text('Insert Classroom'),
-            onTap: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => insertClassroom()));
+                  MaterialPageRoute(builder: (context) => InsertMenu()));
             },
           ),
           ListTile(
@@ -120,12 +112,12 @@ class _NavBarState extends State<NavBar> {
   getInfo() async {
     var n = await storage.read(key: 'name');
     var e = await storage.read(key: 'email');
-    var p = await storage.read(key: 'picture');
+    //var p = await storage.read(key: 'picture');
 
       setState(() {
         name = n!;
         email = e!;
-        picture = p!;
+        //picture = p!;
       });
   }
 }

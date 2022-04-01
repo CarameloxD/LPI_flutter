@@ -8,7 +8,6 @@ import 'package:sistema_presencas/utilities/constants.dart';
 
 import 'homeTeacher.dart';
 
-
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
@@ -19,25 +18,25 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   bool _rememberMe = false;
   int state = 0;
-  final TextEditingController _studentNumberController = TextEditingController();
+  final TextEditingController _studentNumberController =
+      TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _validate_studentNumber = false, _validate_password = false;
   final storage = new FlutterSecureStorage();
 
   Future<int> attemptLogIn(
       String studentNumber, String password, BuildContext context) async {
-    print('TOUUUUUUUUUUU');
-    final response = await http.post(Uri.parse('https://siws.ufp.pt/api/v1/login'),
-        body:{
-          "username": studentNumber,
-          "password": password
-          });
+    final response = await http.post(
+        Uri.parse('https://siws.ufp.pt/api/v1/login'),
+        body: {"username": studentNumber, "password": password});
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       await storage.write(key: 'studentNumber', value: studentNumber);
+      print(response.body);
       if (jsonResponse != null) {
         state = 1;
-        await storage.write(key: "token", value: json.decode(response.body)['message']);
+        await storage.write(
+            key: "token", value: json.decode(response.body)['message']);
         var token = json.decode(response.body)['message'];
       }
       return 1;
@@ -47,22 +46,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       return 0;
     }
   }
+
   _showDialog(context) {
     return showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Username or password wrong'),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Try again!'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ));
+              title: Text('Error'),
+              content: Text('Username or password wrong'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Try again!'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
   }
+
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,6 +157,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
+
   bool isNumeric(String s) {
     if (s == null) {
       return false;
@@ -173,27 +175,23 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           var studentNumber = _studentNumberController.text;
           var password = _passwordController.text;
 
-          setState(() {
-            
-          });
+          setState(() {});
 
           if (_validate_studentNumber != true) {
             await attemptLogIn(studentNumber, password, context);
 
             if (state == 0) {
               _showDialog(context); //mensagem de erro ao dar login
-            } else if(isNumeric(studentNumber)) { // se o studentNumber for so numeros..
-              Navigator.pushReplacement(
+            } else if (isNumeric(studentNumber)) {
+              // se o studentNumber for so numeros..
+              Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => HomeScreen()),
               );
-            }
-            else{ // senao..
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                  builder: (context) => HomeScreenTeacher()),
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreenTeacher()),
               );
             }
           }
