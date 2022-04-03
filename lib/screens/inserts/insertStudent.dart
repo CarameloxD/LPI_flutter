@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../utilities/constants.dart';
-import 'NavBar.dart';
+import '../../utilities/constants.dart';
+import '../NavBar.dart';
 
 class insertStudent extends StatefulWidget {
   @override
@@ -11,23 +11,22 @@ class insertStudent extends StatefulWidget {
 
 class _insertStudentState extends State<insertStudent> {
   final _formKey = GlobalKey<FormState>();
-  var _name = '', _email = '', _studentNumber = 0;
+  var _name = '', _email = '', _studentNumber = '';
 
-
-  Future<int> attemptInsert(String name, String email, int studentNumber,
+  Future<int> attemptInsert(String name, String email, String student_number,
       BuildContext context) async {
     print(name);
     print(email);
-    print(studentNumber);
+    print(student_number);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/home/insertStudent'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/student/insertStudent'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'name': name,
-          'email': email,
-          'student_number': studentNumber
+          'Name': name,
+          'Email': email,
+          'student_number': int.parse(student_number)
         }));
     print(response.body);
     print(response.statusCode);
@@ -48,14 +47,19 @@ class _insertStudentState extends State<insertStudent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text('Insert Student')),
+        appBar: AppBar(
+            centerTitle: true,
+            title: Text('Insert Student'),
+            backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
         body: Container(
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(padding: const EdgeInsets.symmetric(vertical: 5.0),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                ),
                 Text(
                   'Name',
                   style: TextStyle(
@@ -74,7 +78,9 @@ class _insertStudentState extends State<insertStudent> {
                     _name = value!;
                   });
                 }),
-                Padding(padding: const EdgeInsets.symmetric(vertical: 5.0),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                ),
                 Text(
                   'Email',
                   style: TextStyle(
@@ -93,7 +99,9 @@ class _insertStudentState extends State<insertStudent> {
                     _email = value!;
                   });
                 }),
-                Padding(padding: const EdgeInsets.symmetric(vertical: 5.0),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                ),
                 Text(
                   'Student number',
                   style: TextStyle(
@@ -109,7 +117,7 @@ class _insertStudentState extends State<insertStudent> {
                   return null;
                 }, onSaved: (value) {
                   setState(() {
-                    _studentNumber = int.parse(value!);
+                    _studentNumber = value!;
                   });
                 }),
                 Padding(

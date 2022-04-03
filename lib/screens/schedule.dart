@@ -5,7 +5,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'NavBar.dart';
 
-
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
 
@@ -70,7 +69,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('UFP')),
+      appBar: AppBar(
+          centerTitle: true,
+          title: Text('UFP'),
+          backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
       body: Center(
         child: Stack(
           children: <Widget>[

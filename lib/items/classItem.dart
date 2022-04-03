@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ClassItem extends StatefulWidget {
-
   @override
   State<ClassItem> createState() => _ClassItemState();
 }
 
 class _ClassItemState extends State<ClassItem> {
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -20,7 +18,7 @@ class _ClassItemState extends State<ClassItem> {
       child: Builder(
         builder: (context) => Card(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -41,7 +39,7 @@ class _ClassItemState extends State<ClassItem> {
                   ],
                 ),
                 Icon(
-                    Icons.event,
+                  Icons.event,
                 )
               ],
             ),

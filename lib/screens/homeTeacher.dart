@@ -5,15 +5,14 @@ import 'package:http/http.dart' as http;
 import 'NavBar.dart';
 
 class HomeScreenTeacher extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     getData();
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: Text('UFP Teacher')
-      ),
+          title: Text('UFP Teacher'),
+          backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
       drawer: NavBar(),
     );
   }
@@ -21,7 +20,8 @@ class HomeScreenTeacher extends StatelessWidget {
   getData() async {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "studentNumber");
-    final response = await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/home/$number'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/home/$number'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

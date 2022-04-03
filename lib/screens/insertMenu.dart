@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'NavBar.dart';
-import 'insertClass.dart';
-import 'insertClassroom.dart';
-import 'insertStudent.dart';
+import 'inserts/insertClass.dart';
+import 'inserts/insertClassroom.dart';
+import 'inserts/insertStudent.dart';
+import 'inserts/insertSubject.dart';
+import 'inserts/insertSubscription.dart';
+import 'inserts/insertTeacher.dart';
 
 class InsertMenu extends StatefulWidget {
   @override
@@ -13,7 +16,10 @@ class _InsertMenuState extends State<InsertMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('Insert Menu')),
+      appBar: AppBar(
+          centerTitle: true,
+          title: Text('Insert Menu'),
+          backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
       drawer: NavBar(),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
@@ -24,10 +30,11 @@ class _InsertMenuState extends State<InsertMenu> {
             makeDashboardItem("Student", Icons.school, insertStudent()),
             //makeDashboardItem("Subscription", Icons.people_alt_outlined, insertSubscription()),
             makeDashboardItem("Class", Icons.people, insertClass()),
-            //makeDashboardItem("Teacher", Icons.account_circle, insertTeacher()),
+            makeDashboardItem("Teacher", Icons.account_circle, insertTeacher()),
             //makeDashboardItem("Schedule", Icons.event, insertSchedule()),
-            makeDashboardItem("Classroom", Icons.meeting_room, insertClassroom()),
-            //makeDashboardItem("Subject", Icons.subject, insertSubject()),
+            makeDashboardItem(
+                "Classroom", Icons.meeting_room, insertClassroom()),
+            makeDashboardItem("Subject", Icons.subject, insertSubject()),
           ],
         ),
       ),
@@ -42,8 +49,8 @@ class _InsertMenuState extends State<InsertMenu> {
           decoration: BoxDecoration(color: Color.fromRGBO(220, 220, 220, 1.0)),
           child: new InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => screen));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => screen));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

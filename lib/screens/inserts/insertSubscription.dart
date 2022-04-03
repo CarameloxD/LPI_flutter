@@ -1,28 +1,29 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'NavBar.dart';
+import '../NavBar.dart';
 
-class insertClass extends StatefulWidget {
+class insertSubscription extends StatefulWidget {
   @override
-  _insertClassState createState() => _insertClassState();
+  _insertSubscriptionState createState() => _insertSubscriptionState();
 }
 
-class _insertClassState extends State<insertClass> {
+class _insertSubscriptionState extends State<insertSubscription> {
   final _formKey = GlobalKey<FormState>();
-  var _ClassName = '';
+  var _idClass = 0, _idStudent = 0;
 
-
-  Future<int> attemptInsert(String ClassName, BuildContext context) async {
-    print(ClassName);
+  Future<int> attemptInsert(
+      int idClass, int idStudent, BuildContext context) async {
+    print(idClass);
+    print(idStudent);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/home/insertClass'),
+        Uri.parse(
+            'http://10.0.2.2:8081/api/v1/subscription/insertSubscription'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>{
-          'ClassAcronym': ClassName,
-        }));
+        body: jsonEncode(
+            <String, dynamic>{'IdClass': idClass, 'IdStudent': idStudent}));
     print(response.body);
     print(response.statusCode);
 
@@ -30,7 +31,7 @@ class _insertClassState extends State<insertClass> {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Class inserted')),
+        const SnackBar(content: Text('Subscription inserted')),
       );
       return 1;
     } else {
@@ -42,14 +43,19 @@ class _insertClassState extends State<insertClass> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(centerTitle: true, title: Text('Insert Class')),
+        appBar: AppBar(
+            centerTitle: true,
+            title: Text('Insert Subscription'),
+            backgroundColor: Colors.green),
         body: Container(
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(padding: const EdgeInsets.symmetric(vertical: 5.0),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                ),
                 Text(
                   'Class Name',
                   style: TextStyle(
@@ -57,15 +63,15 @@ class _insertClassState extends State<insertClass> {
                   ),
                 ),
                 TextFormField(
-                  // The validator receives the text that the user has entered.
+                    // The validator receives the text that the user has entered.
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please insert a name for the class';
-                      }
-                      return null;
-                    }, onSaved: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please insert a name for the class';
+                  }
+                  return null;
+                }, onSaved: (value) {
                   setState(() {
-                    _ClassName = value!;
+                    //_ClassName = value!;
                   });
                 }),
                 Padding(
@@ -80,8 +86,7 @@ class _insertClassState extends State<insertClass> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptInsert(
-                            _ClassName, context);
+                        await attemptInsert(_idClass, _idStudent, context);
                       }
                     },
                     child: const Text('Submit'),

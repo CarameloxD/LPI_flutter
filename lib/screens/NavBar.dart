@@ -3,11 +3,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sistema_presencas/screens/schedule.dart';
 import 'package:sistema_presencas/screens/settings.dart';
 import 'package:sistema_presencas/screens/welcome.dart';
-import 'package:sistema_presencas/screens/insertStudent.dart';
+import 'package:sistema_presencas/screens/inserts/insertStudent.dart';
 
 import 'home.dart';
 import 'insertMenu.dart';
-
 
 class NavBar extends StatefulWidget {
   //const NavBar({required Key key}) : super(key: key);
@@ -59,8 +58,7 @@ class _NavBarState extends State<NavBar> {
               onTap: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (BuildContext context) => HomeScreen()));
-              }
-          ),
+              }),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
@@ -96,8 +94,7 @@ class _NavBarState extends State<NavBar> {
               onTap: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (BuildContext context) => Settings()));
-              }
-          ),
+              }),
           ListTile(
               title: Text('Exit'),
               leading: Icon(Icons.exit_to_app),
@@ -109,15 +106,16 @@ class _NavBarState extends State<NavBar> {
       ),
     );
   }
+
   getInfo() async {
     var n = await storage.read(key: 'name');
     var e = await storage.read(key: 'email');
     //var p = await storage.read(key: 'picture');
 
-      setState(() {
-        name = n!;
-        email = e!;
-        //picture = p!;
-      });
+    setState(() {
+      name = n!;
+      email = e!;
+      //picture = p!;
+    });
   }
 }

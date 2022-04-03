@@ -27,12 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
-            title: Text('UFP')
-        ),
+            title: Text('UFP'),
+            backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
         drawer: NavBar(),
         body: Container(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+              ),
               Text("Dia de hoje"),
               Flexible(
                 child: Center(
@@ -47,14 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 
   getData() async {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "studentNumber");
-    final response = await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/home/$number'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/home/$number'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
