@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sistema_presencas/screens/HomeScreenAdmin.dart';
 import 'package:sistema_presencas/screens/home.dart';
 import 'package:sistema_presencas/utilities/constants.dart';
 
@@ -22,6 +24,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _validate_studentNumber = false, _validate_password = false;
+  bool _isAdmin = false;
   final storage = new FlutterSecureStorage();
 
   Future<int> attemptLogIn(
@@ -46,7 +49,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       return 0;
     }
   }
+  Future<int> attemptLogInAdmin(
+      String username, String password, BuildContext context) async {
 
+    var response = await http.post(
+        Uri.parse('http://10.0.2.2:8081/api/v1/admin/login'),
+        body: convert.jsonEncode(
+            <String, String>{"username": username, "password": password}));
+    var jsonResponse;
+    print(response.body);
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+      if (jsonResponse != null) {
+        state = 1;
+        var token = json.decode(response.body)['token'];
+        var email = json.decode(response.body)['email'];
+
+        await storage.write(key: 'jwt', value: token);
+        await storage.write(key: 'email', value: email);
+      }
+      return 1;
+    } else {
+      state = 0;
+      print("Incorrect");
+      return 0;
+    }
+  }
   _showDialog(context) {
     return showDialog(
         context: context,
@@ -165,6 +193,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return double.tryParse(s) != null;
   }
 
+  bool isAdmin(String username, String password){
+    if (username == 'admin' && password == 'admin'){
+      _isAdmin = true;
+      return true;
+    }
+    return false;
+  }
+
   Widget _buildLoginBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -177,7 +213,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
           setState(() {});
 
-          if (_validate_studentNumber != true) {
+          if (_validate_studentNumber != true && !isAdmin(studentNumber,password)) {
             await attemptLogIn(studentNumber, password, context);
 
             if (state == 0) {
@@ -192,6 +228,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreenTeacher()),
+              );
+            }
+          } else{
+            await attemptLogInAdmin(studentNumber, password, context);
+            if (state == 0) {
+              print("tou maninho");
+              _showDialog(context); //mensagem de erro ao dar login
+            } else{
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreenAdmin()),
               );
             }
           }

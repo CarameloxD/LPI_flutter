@@ -75,6 +75,7 @@ class _NavBarState extends State<NavBar> {
                   MaterialPageRoute(builder: (context) => ScheduleScreen()));
             },
           ),
+
           ListTile(
             leading: Icon(Icons.insert_drive_file),
             title: Text('Insert Menu'),
