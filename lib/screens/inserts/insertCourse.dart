@@ -1,26 +1,25 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:select_form_field/select_form_field.dart';
 
-class insertClass extends StatefulWidget {
+class insertCourse extends StatefulWidget {
   @override
-  _insertClassState createState() => _insertClassState();
+  _insertCourseState createState() => _insertCourseState();
 }
 
-class _insertClassState extends State<insertClass> {
+class _insertCourseState extends State<insertCourse> {
   final _formKey = GlobalKey<FormState>();
-  var _ClassName = '';
+  var _title = '';
 
-  Future<int> attemptInsert(String ClassName, BuildContext context) async {
-    print(ClassName);
+  Future<int> attemptInsert(String title, BuildContext context) async {
+    print(title);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/class/insertClass'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/course/InsertCourse'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'ClassAcronym': ClassName,
+          'Title': title,
         }));
     print(response.body);
     print(response.statusCode);
@@ -29,7 +28,7 @@ class _insertClassState extends State<insertClass> {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Class inserted')),
+        const SnackBar(content: Text('Course inserted')),
       );
       return 1;
     } else {
@@ -43,7 +42,7 @@ class _insertClassState extends State<insertClass> {
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
-            title: Text('Insert Class'),
+            title: Text('Insert Course'),
             backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
         body: Container(
           child: Form(
@@ -55,7 +54,7 @@ class _insertClassState extends State<insertClass> {
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                 ),
                 Text(
-                  'Class Name',
+                  'Name',
                   style: TextStyle(
                     color: Colors.black,
                   ),
@@ -64,12 +63,12 @@ class _insertClassState extends State<insertClass> {
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please insert a name for the class';
+                    return 'Please insert the name of the course';
                   }
                   return null;
                 }, onSaved: (value) {
                   setState(() {
-                    _ClassName = value!;
+                    _title = value!;
                   });
                 }),
                 Padding(
@@ -84,7 +83,7 @@ class _insertClassState extends State<insertClass> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptInsert(_ClassName, context);
+                        await attemptInsert(_title, context);
                       }
                     },
                     child: const Text('Submit'),

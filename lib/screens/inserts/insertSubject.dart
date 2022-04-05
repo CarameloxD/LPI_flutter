@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:select_form_field/select_form_field.dart';
 
 class insertSubject extends StatefulWidget {
   @override
@@ -9,18 +10,29 @@ class insertSubject extends StatefulWidget {
 
 class _insertSubjectState extends State<insertSubject> {
   final _formKey = GlobalKey<FormState>();
-  var _name = '', _type = '';
+  var _name = '', _type = '', _idCourse = '';
+  final List<Map<String, dynamic>> _courses = [];
+
+  void initState() {
+    super.initState();
+    this.getCourses();
+  }
 
   Future<int> attemptInsert(
-      String name, String type, BuildContext context) async {
+      String name, String type, String idCourse, BuildContext context) async {
     print(name);
     print(type);
+    print(idCourse);
     final response = await http.post(
         Uri.parse('http://10.0.2.2:8081/api/v1/subject/insertSubject'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>{'Name': name, 'Type': type}));
+        body: jsonEncode(<String, dynamic>{
+          'Name': name,
+          'Type': type,
+          'IdCourse': int.parse(idCourse)
+        }));
     print(response.body);
     print(response.statusCode);
 
@@ -52,6 +64,28 @@ class _insertSubjectState extends State<insertSubject> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
+                ),
+                SelectFormField(
+                  type: SelectFormFieldType.dropdown,
+                  validator: (val) {
+                    if (val == null || val.isEmpty) {
+                      return 'Please insert a course';
+                    }
+                    return null;
+                  },
+                  icon: Icon(Icons.work),
+                  labelText: 'Course',
+                  items: _courses,
+                  onChanged: (val) {
+                    print(val);
+                    setState(() {
+                      _idCourse = val;
+                    });
+                  },
+                  onSaved: (val) => print(val),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
                 ),
                 Text(
                   'Name of Subject',
@@ -130,7 +164,7 @@ class _insertSubjectState extends State<insertSubject> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptInsert(_name, _type, context);
+                        await attemptInsert(_name, _type, _idCourse, context);
                       }
                     },
                     child: const Text('Submit'),
@@ -140,5 +174,20 @@ class _insertSubjectState extends State<insertSubject> {
             ),
           ),
         ));
+  }
+
+  getCourses() async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/getCourses'));
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      List<dynamic> courses = jsonResponse['courses'];
+      courses.forEach((courses) {
+        setState(() {
+          _courses.add({"value": courses['id'], "label": courses['title']});
+        });
+      });
+    }
   }
 }

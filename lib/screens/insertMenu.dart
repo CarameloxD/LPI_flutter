@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'NavBar.dart';
 import 'inserts/insertClass.dart';
 import 'inserts/insertClassroom.dart';
+import 'inserts/insertCourse.dart';
 import 'inserts/insertStudent.dart';
 import 'inserts/insertSubject.dart';
 import 'inserts/insertSubscription.dart';
@@ -28,13 +29,14 @@ class _InsertMenuState extends State<InsertMenu> {
           padding: EdgeInsets.all(3.0),
           children: <Widget>[
             makeDashboardItem("Student", Icons.school, insertStudent()),
-            //makeDashboardItem("Subscription", Icons.people_alt_outlined, insertSubscription()),
-            makeDashboardItem("Class", Icons.people, insertClass()),
-            makeDashboardItem("Teacher", Icons.account_circle, insertTeacher()),
-            //makeDashboardItem("Schedule", Icons.event, insertSchedule()),
-            makeDashboardItem(
-                "Classroom", Icons.meeting_room, insertClassroom()),
+            makeDashboardItem("Course", Icons.work, insertCourse()),
+            makeDashboardItem("Subscription", Icons.people_alt_outlined, insertSubscription()),
             makeDashboardItem("Subject", Icons.subject, insertSubject()),
+            makeDashboardItem("Teacher", Icons.account_circle, insertTeacher()),
+            makeDashboardItem("Class", Icons.people, insertClass()),
+            makeDashboardItem("Classroom", Icons.meeting_room, insertClassroom()),
+            //makeDashboardItem("Schedule", Icons.event, insertSchedule()),
+            //makeDashboardItem("Attendance", Icons.event_available, insertAttendance()),
           ],
         ),
       ),

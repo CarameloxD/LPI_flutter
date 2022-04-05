@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../NavBar.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 class insertSubscription extends StatefulWidget {
   @override
@@ -10,20 +10,30 @@ class insertSubscription extends StatefulWidget {
 
 class _insertSubscriptionState extends State<insertSubscription> {
   final _formKey = GlobalKey<FormState>();
-  var _idClass = 0, _idStudent = 0;
+  var _idStudent = '', _idCourse = '';
+  final List<Map<String, dynamic>> _courses = [];
+  final List<Map> _students = [];
+
+  void initState() {
+    super.initState();
+    this.getCourses();
+    this.getStudents();
+  }
 
   Future<int> attemptInsert(
-      int idClass, int idStudent, BuildContext context) async {
-    print(idClass);
+      String idStudent, String idCourse, BuildContext context) async {
     print(idStudent);
+    print(idCourse);
     final response = await http.post(
         Uri.parse(
             'http://10.0.2.2:8081/api/v1/subscription/insertSubscription'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, dynamic>{'IdClass': idClass, 'IdStudent': idStudent}));
+        body: jsonEncode(<String, dynamic>{
+          'IdCourse': int.parse(idCourse),
+          'IdStudent': int.parse(idStudent)
+        }));
     print(response.body);
     print(response.statusCode);
 
@@ -46,7 +56,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
         appBar: AppBar(
             centerTitle: true,
             title: Text('Insert Subscription'),
-            backgroundColor: Colors.green),
+            backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
         body: Container(
           child: Form(
             key: _formKey,
@@ -56,26 +66,44 @@ class _insertSubscriptionState extends State<insertSubscription> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                 ),
-                Text(
-                  'Class Name',
-                  style: TextStyle(
-                    color: Colors.black,
+                SelectFormField(
+                  type: SelectFormFieldType.dropdown,
+                  validator: (val) {
+                    if (val == null || val.isEmpty) {
+                      return 'Please insert a course';
+                    }
+                    return null;
+                  },
+                  icon: Icon(Icons.work),
+                  labelText: 'Course',
+                  items: _courses,
+                  onChanged: (val) {
+                    print(val);
+                    setState(() {
+                      _idCourse = val;
+                    });
+                  },
+                  onSaved: (val) => print(val),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                ),
+                Expanded(
+                  child: ListView(
+                    children: _students.map((student) {
+                      return CheckboxListTile(
+                          value: student['isChecked'],
+                          title: Text(student['value']!),
+                          onChanged: (newValue) {
+                            setState(() {
+                              student['isChecked'] = newValue;
+                            });
+                          });
+                    }).toList(),
                   ),
                 ),
-                TextFormField(
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please insert a name for the class';
-                  }
-                  return null;
-                }, onSaved: (value) {
-                  setState(() {
-                    //_ClassName = value!;
-                  });
-                }),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
                   child: ElevatedButton(
                     onPressed: () async {
                       // Validate returns true if the form is valid, or false otherwise.
@@ -86,7 +114,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptInsert(_idClass, _idStudent, context);
+                        await attemptInsert(_idStudent, _idCourse, context);
                       }
                     },
                     child: const Text('Submit'),
@@ -95,6 +123,41 @@ class _insertSubscriptionState extends State<insertSubscription> {
               ],
             ),
           ),
-        ));
+        )
+    );
+  }
+
+  getCourses() async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/getCourses'));
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      List<dynamic> courses = jsonResponse['courses'];
+      courses.forEach((courses) {
+        setState(() {
+          _courses.add({"value": courses['id'], "label": courses['title']});
+        });
+      });
+    }
+  }
+
+  getStudents() async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/getStudents'));
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      List<dynamic> students = jsonResponse['students'];
+      students.forEach((students) {
+        setState(() {
+          _students.add({
+            "key": students['id'],
+            "value": students['name'],
+            "isChecked": false
+          });
+        });
+      });
+    }
   }
 }
