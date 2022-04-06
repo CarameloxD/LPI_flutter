@@ -13,6 +13,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
   var _idStudent = '', _idCourse = '';
   final List<Map<String, dynamic>> _courses = [];
   final List<Map> _students = [];
+  final _idStudents = [];
 
   void initState() {
     super.initState();
@@ -21,9 +22,16 @@ class _insertSubscriptionState extends State<insertSubscription> {
   }
 
   Future<int> attemptInsert(
-      String idStudent, String idCourse, BuildContext context) async {
-    print(idStudent);
-    print(idCourse);
+      List<Map> _studentslist, String idCourse, BuildContext context) async {
+    //print(_studentslist);
+    //print(idCourse);
+    _studentslist.forEach((element) {
+      print(element);
+      if(element['isChecked'] == true){
+        _idStudents.add(element['key']);
+      }
+    });
+    print(_idStudents);
     final response = await http.post(
         Uri.parse(
             'http://10.0.2.2:8081/api/v1/subscription/insertSubscription'),
@@ -32,7 +40,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
         },
         body: jsonEncode(<String, dynamic>{
           'IdCourse': int.parse(idCourse),
-          'IdStudent': int.parse(idStudent)
+          'IdStudents': _idStudents
         }));
     print(response.body);
     print(response.statusCode);
@@ -114,7 +122,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptInsert(_idStudent, _idCourse, context);
+                        await attemptInsert(_students ,_idCourse, context);
                       }
                     },
                     child: const Text('Submit'),
