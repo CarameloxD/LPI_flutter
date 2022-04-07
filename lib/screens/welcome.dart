@@ -10,6 +10,8 @@ import 'package:sistema_presencas/utilities/constants.dart';
 
 import 'homeTeacher.dart';
 
+
+
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
@@ -24,7 +26,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _validate_studentNumber = false, _validate_password = false;
-  bool _isAdmin = false;
+
   final storage = new FlutterSecureStorage();
 
   Future<int> attemptLogIn(
@@ -42,6 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             key: "token", value: json.decode(response.body)['message']);
         var token = json.decode(response.body)['message'];
       }
+      await storage.write(key: 'admin', value: 'no');
       return 1;
     } else {
       state = 0;
@@ -64,10 +67,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         state = 1;
         var token = json.decode(response.body)['token'];
         var email = json.decode(response.body)['email'];
+        var nome = json.decode(response.body)['username'];
+
+        print(nome);
 
         await storage.write(key: 'jwt', value: token);
         await storage.write(key: 'email', value: email);
+        await storage.write(key: 'admin', value: 'yes');
+
       }
+
       return 1;
     } else {
       state = 0;
@@ -75,6 +84,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       return 0;
     }
   }
+
+
   _showDialog(context) {
     return showDialog(
         context: context,
@@ -195,7 +206,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   bool isAdmin(String username, String password){
     if (username == 'admin' && password == 'admin'){
-      _isAdmin = true;
       return true;
     }
     return false;
