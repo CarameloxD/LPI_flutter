@@ -10,9 +10,11 @@ class insertClass extends StatefulWidget {
 
 class _insertClassState extends State<insertClass> {
   final _formKey = GlobalKey<FormState>();
-  var _ClassName = '';
+  var _ClassName = '', _idSubject = '', _idTeacher = '';
+  final List<Map<String, dynamic>> _subjects = [];
+  final List<Map<String, dynamic>> _teachers = [];
 
-  Future<int> attemptInsert(String ClassName, BuildContext context) async {
+  Future<int> attemptInsert(String ClassName, String idSubject, String idTeacher,BuildContext context) async {
     print(ClassName);
     final response = await http.post(
         Uri.parse('http://10.0.2.2:8081/api/v1/class/insertClass'),
@@ -21,6 +23,8 @@ class _insertClassState extends State<insertClass> {
         },
         body: jsonEncode(<String, dynamic>{
           'ClassAcronym': ClassName,
+          'IdSubject': idSubject,
+          'IdTeacher': idTeacher,
         }));
     print(response.body);
     print(response.statusCode);
@@ -73,6 +77,50 @@ class _insertClassState extends State<insertClass> {
                   });
                 }),
                 Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                ),
+                SelectFormField(
+                  type: SelectFormFieldType.dropdown,
+                  validator: (val) {
+                    if (val == null || val.isEmpty) {
+                      return 'Please insert a subject';
+                    }
+                    return null;
+                  },
+                  icon: Icon(Icons.subject),
+                  labelText: 'Subject',
+                  items: _subjects,
+                  onChanged: (val) {
+                    print(val);
+                    setState(() {
+                      _idSubject = val;
+                    });
+                  },
+                  onSaved: (val) => print(val),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                ),
+                SelectFormField(
+                  type: SelectFormFieldType.dropdown,
+                  validator: (val) {
+                    if (val == null || val.isEmpty) {
+                      return 'Please insert a teacher';
+                    }
+                    return null;
+                  },
+                  icon: Icon(Icons.account_circle),
+                  labelText: 'Teacher',
+                  items: _teachers,
+                  onChanged: (val) {
+                    print(val);
+                    setState(() {
+                      _idTeacher = val;
+                    });
+                  },
+                  onSaved: (val) => print(val),
+                ),
+                Padding(
                   padding: const EdgeInsets.symmetric(vertical: 13.0),
                   child: ElevatedButton(
                     onPressed: () async {
@@ -84,7 +132,7 @@ class _insertClassState extends State<insertClass> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptInsert(_ClassName, context);
+                        await attemptInsert(_ClassName, _idSubject, _idTeacher,context);
                       }
                     },
                     child: const Text('Submit'),
@@ -95,5 +143,35 @@ class _insertClassState extends State<insertClass> {
           ),
         )
     );
+  }
+
+  getSubjects() async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/subject/getSubjects'));
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      List<dynamic> subjects = jsonResponse['subjects'];
+      subjects.forEach((subjects) {
+        setState(() {
+          _subjects.add({"value": subjects['id'], "label": subjects['name']});
+        });
+      });
+    }
+  }
+
+  getTeachers() async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/teacher/getTeachers'));
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      List<dynamic> teachers = jsonResponse['teachers'];
+      teachers.forEach((teachers) {
+        setState(() {
+          _teachers.add({"value": teachers['id'], "label": teachers['name']});
+        });
+      });
+    }
   }
 }

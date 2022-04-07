@@ -10,7 +10,7 @@ class insertSubscription extends StatefulWidget {
 
 class _insertSubscriptionState extends State<insertSubscription> {
   final _formKey = GlobalKey<FormState>();
-  var _idStudent = '', _idCourse = '';
+  var _idCourse = '';
   final List<Map<String, dynamic>> _courses = [];
   final List<Map> _students = [];
   final List<int> _idStudents = [];
@@ -23,11 +23,9 @@ class _insertSubscriptionState extends State<insertSubscription> {
 
   Future<int> attemptInsert(
       List<Map> _studentslist, String idCourse, BuildContext context) async {
-    //print(_studentslist);
-    //print(idCourse);
     _studentslist.forEach((element) {
       print(element);
-      if(element['isChecked'] == true){
+      if (element['isChecked'] == true) {
         _idStudents.add(element['key']);
       }
     });
@@ -122,7 +120,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptInsert(_students ,_idCourse, context);
+                        await attemptInsert(_students, _idCourse, context);
                       }
                     },
                     child: const Text('Submit'),
@@ -131,8 +129,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 
   getCourses() async {
