@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sistema_presencas/screens/HomeScreenAdmin.dart';
 import 'package:sistema_presencas/screens/schedule.dart';
 import 'package:sistema_presencas/screens/settings.dart';
 import 'package:sistema_presencas/screens/welcome.dart';
@@ -8,16 +9,16 @@ import 'welcome.dart';
 import 'home.dart';
 import 'insertMenu.dart';
 
-class NavBar extends StatefulWidget {
+class NavBarAdmin extends StatefulWidget {
   //const NavBar({required Key key}) : super(key: key);
 
   @override
-  _NavBarState createState() => _NavBarState();
+  _NavBarAdminState createState() => _NavBarAdminState();
 }
 
-class _NavBarState extends State<NavBar> {
+class _NavBarAdminState extends State<NavBarAdmin> {
   final storage = new FlutterSecureStorage();
-  var name = '', email = '', picture = '', isAdmin = '';
+  var name = '', email = '', picture = '';
 
 
   void initState() {
@@ -59,7 +60,7 @@ class _NavBarState extends State<NavBar> {
               title: Text('Home'),
               onTap: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => HomeScreen()));
+                    builder: (BuildContext context) => HomeScreenAdmin()));
               }),
           ListTile(
             leading: Icon(Icons.person),
@@ -70,18 +71,13 @@ class _NavBarState extends State<NavBar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.calendar_month),
-            title: Text('Schedule'),
+            leading: Icon(Icons.insert_drive_file),
+            title: Text('Insert Menu'),
             onTap: () {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ScheduleScreen()));
+                  MaterialPageRoute(builder: (context) => InsertMenu()));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.notifications),
-            title: Text('Request'),
-          ),
-          Divider(),
           ListTile(
               leading: Icon(Icons.settings),
               title: Text('Settings'),
@@ -105,12 +101,11 @@ class _NavBarState extends State<NavBar> {
     var n = await storage.read(key: 'name');
     var e = await storage.read(key: 'email');
     //var p = await storage.read(key: 'picture');
-    var isAdmin = await storage.read(key: 'admin');
+
 
     setState(() {
       name = n!;
       email = e!;
-      isAdmin = isAdmin!;
       //picture = p!;
     });
   }

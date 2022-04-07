@@ -53,11 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
+
   getData() async {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "studentNumber");
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/student/$number'));
+    await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/student/$number'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

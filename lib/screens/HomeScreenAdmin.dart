@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'NavBar.dart';
+import 'NavBarAdmin.dart';
 
 class HomeScreenAdmin extends StatelessWidget {
   @override
@@ -13,7 +13,7 @@ class HomeScreenAdmin extends StatelessWidget {
           centerTitle: true,
           title: Text('ADMIN'),
           backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
-      drawer: NavBar(),
+      drawer: NavBarAdmin(),
     );
   }
 
