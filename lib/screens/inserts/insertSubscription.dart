@@ -13,7 +13,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
   var _idStudent = '', _idCourse = '';
   final List<Map<String, dynamic>> _courses = [];
   final List<Map> _students = [];
-  final _idStudents = [];
+  final List<int> _idStudents = [];
 
   void initState() {
     super.initState();
