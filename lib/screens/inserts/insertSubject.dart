@@ -24,7 +24,7 @@ class _insertSubjectState extends State<insertSubject> {
     print(type);
     print(idCourse);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/subject/insertSubject'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/subject/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -178,7 +178,7 @@ class _insertSubjectState extends State<insertSubject> {
 
   getCourses() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/getCourses'));
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

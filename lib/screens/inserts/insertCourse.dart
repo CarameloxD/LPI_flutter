@@ -14,7 +14,7 @@ class _insertCourseState extends State<insertCourse> {
   Future<int> attemptInsert(String title, BuildContext context) async {
     print(title);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/course/InsertCourse'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/course/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

@@ -3,6 +3,7 @@ import 'NavBar.dart';
 import 'inserts/insertClass.dart';
 import 'inserts/insertClassroom.dart';
 import 'inserts/insertCourse.dart';
+import 'inserts/insertSchedule.dart';
 import 'inserts/insertStudent.dart';
 import 'inserts/insertSubject.dart';
 import 'inserts/insertSubscription.dart';
@@ -35,7 +36,7 @@ class _InsertMenuState extends State<InsertMenu> {
             makeDashboardItem("Teacher", Icons.account_circle, insertTeacher()),
             makeDashboardItem("Class", Icons.people, insertClass()),
             makeDashboardItem("Classroom", Icons.meeting_room, insertClassroom()),
-            //makeDashboardItem("Schedule", Icons.event, insertSchedule()),
+            makeDashboardItem("Schedule", Icons.event, insertSchedule()),
             //makeDashboardItem("Attendance", Icons.event_available, insertAttendance()),
           ],
         ),

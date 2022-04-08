@@ -17,7 +17,7 @@ class _insertTeacherState extends State<insertTeacher> {
     print(email);
     print(username);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/teacher/insertTeacher'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/teacher/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

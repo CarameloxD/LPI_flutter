@@ -134,7 +134,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
 
   getCourses() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/getCourses'));
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
@@ -149,7 +149,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
 
   getStudents() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/getStudents'));
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

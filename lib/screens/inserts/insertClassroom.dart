@@ -15,7 +15,7 @@ class _insertClassroomState extends State<insertClassroom> {
   Future<int> attemptInsert(
       int identifier, int capacity, BuildContext context) async {
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/classroom/insertClassroom'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/classroom/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

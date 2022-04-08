@@ -14,17 +14,22 @@ class _insertClassState extends State<insertClass> {
   final List<Map<String, dynamic>> _subjects = [];
   final List<Map<String, dynamic>> _teachers = [];
 
+  void initState() {
+    super.initState();
+    this.getSubjects();
+    this.getTeachers();
+  }
+
   Future<int> attemptInsert(String ClassName, String idSubject, String idTeacher,BuildContext context) async {
-    print(ClassName);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/class/insertClass'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/class/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
           'ClassAcronym': ClassName,
-          'IdSubject': idSubject,
-          'IdTeacher': idTeacher,
+          'IdSubject': int.parse(idSubject),
+          'IdTeacher': int.parse(idTeacher),
         }));
     print(response.body);
     print(response.statusCode);
@@ -147,10 +152,9 @@ class _insertClassState extends State<insertClass> {
 
   getSubjects() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/subject/getSubjects'));
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/subject/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
       List<dynamic> subjects = jsonResponse['subjects'];
       subjects.forEach((subjects) {
         setState(() {
@@ -162,14 +166,13 @@ class _insertClassState extends State<insertClass> {
 
   getTeachers() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/teacher/getTeachers'));
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/teacher/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
       List<dynamic> teachers = jsonResponse['teachers'];
       teachers.forEach((teachers) {
         setState(() {
-          _teachers.add({"value": teachers['id'], "label": teachers['name']});
+          _teachers.add({"value": teachers['Id'], "label": teachers['name']});
         });
       });
     }
