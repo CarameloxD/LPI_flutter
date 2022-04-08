@@ -8,7 +8,7 @@ import 'package:sistema_presencas/screens/inserts/insertStudent.dart';
 import 'welcome.dart';
 import 'home.dart';
 import 'insertMenu.dart';
-
+import 'deleteMenu.dart';
 class NavBarAdmin extends StatefulWidget {
   //const NavBar({required Key key}) : super(key: key);
 
@@ -76,6 +76,14 @@ class _NavBarAdminState extends State<NavBarAdmin> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => InsertMenu()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.insert_drive_file),
+            title: Text('Delete Menu'),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => DeleteMenu()));
             },
           ),
           ListTile(

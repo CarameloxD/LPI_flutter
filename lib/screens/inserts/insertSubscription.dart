@@ -32,7 +32,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
     print(_idStudents);
     final response = await http.post(
         Uri.parse(
-            'http://10.0.2.2:8081/api/v1/subscription/insertSubscription'),
+            'http://10.0.2.2:8081/api/v1/subscription/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
