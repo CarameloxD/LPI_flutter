@@ -21,7 +21,7 @@ class _DeleteMenuState extends State<DeleteMenu> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: Text('Insert Menu'),
+          title: Text('Delete Menu'),
           backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
       drawer: NavBar(),
       body: Container(

@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../../utilities/constants.dart';
-import '../NavBar.dart';
 
 class deleteStudent extends StatefulWidget {
   @override
@@ -16,7 +14,7 @@ class _deleteStudentState extends State<deleteStudent> {
   Future<int> attemptDelete(String id, BuildContext context) async {
 
     final response = await http.delete(
-        Uri.parse('http://10.0.2.2:8081/api/v1/student/delete/$id/'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/student/$id/'),
     );
     print("tou maninho?");
     print(response.statusCode);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'NavBar.dart';
+import 'inserts/insertAttendance.dart';
 import 'inserts/insertClass.dart';
 import 'inserts/insertClassroom.dart';
 import 'inserts/insertCourse.dart';
@@ -37,7 +38,7 @@ class _InsertMenuState extends State<InsertMenu> {
             makeDashboardItem("Class", Icons.people, insertClass()),
             makeDashboardItem("Classroom", Icons.meeting_room, insertClassroom()),
             makeDashboardItem("Schedule", Icons.event, insertSchedule()),
-            //makeDashboardItem("Attendance", Icons.event_available, insertAttendance()),
+            makeDashboardItem("Attendance", Icons.event_available, insertAttendance()),
           ],
         ),
       ),

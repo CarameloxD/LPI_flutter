@@ -74,9 +74,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         await storage.write(key: 'jwt', value: token);
         await storage.write(key: 'email', value: email);
         await storage.write(key: 'admin', value: 'yes');
-
       }
-
       return 1;
     } else {
       state = 0;
