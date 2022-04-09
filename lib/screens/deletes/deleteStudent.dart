@@ -10,6 +10,12 @@ class deleteStudent extends StatefulWidget {
 class _deleteStudentState extends State<deleteStudent> {
   final _formKey = GlobalKey<FormState>();
   var _id = '';
+  final List<Map> _students = [];
+
+  void initState() {
+    super.initState();
+    this.getStudents();
+  }
 
   Future<int> attemptDelete(String id, BuildContext context) async {
 
@@ -38,58 +44,68 @@ class _deleteStudentState extends State<deleteStudent> {
             centerTitle: true,
             title: Text('Delete Student'),
             backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
-        body: Container(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                ),
-                Text(
-                  'Id',
-                  style: TextStyle(
-                    color: Colors.black,
+        body: ListView.builder(
+          itemCount: _students.length,
+          itemBuilder: (BuildContext ctx, index) {
+            // Display the list item
+            return Dismissible(
+              key: UniqueKey(),
+
+              // only allows the user swipe from right to left
+              direction: DismissDirection.endToStart,
+
+              // Remove this product from the list
+              // In production enviroment, you may want to send some request to delete it on server side
+              onDismissed: (_) {
+                setState(() {
+                  _students.removeAt(index);
+                });
+              },
+
+              // Display item's title, price...
+              child: Card(
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Text(_students[index]["key"].toString()),
                   ),
+                  title: Text(_students[index]["value"]),
+                  subtitle: Text("${_students[index]["number"].toString()}"),
+                  trailing: const Icon(Icons.arrow_back),
                 ),
-                TextFormField(
-                  // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Insert the ID of the student to remove';
-                      }
-                      return null;
-                    }, onSaved: (value) {
-                  setState(() {
-                    _id = value!;
-                  });
-                }),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+              ),
+              // This will show up when the user performs dismissal action
+              // It is a red background and a trash icon
+              background: Container(
+                color: Colors.red,
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                alignment: Alignment.centerRight,
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 13.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      // Validate returns true if the form is valid, or false otherwise.
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        // If the form is valid, display a snackbar. In the real world,
-                        // you'd often call a server or save the information in a database.
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Data')),
-                        );
-                        await attemptDelete(
-                            _id, context);
-                      }
-                    },
-                    child: const Text('Submit'),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ));
+  }
+
+  getStudents() async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/'));
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      List<dynamic> students = jsonResponse['students'];
+      students.forEach((students) {
+        setState(() {
+          _students.add({
+            "key": students['id'],
+            "value": students['name'],
+            "number": students['student_number']
+          });
+        });
+      });
+    }
   }
 }
