@@ -31,7 +31,7 @@ dependencies:
     sdk: flutter
   http: ^0.13.4
   flutter_secure_storage: ^5.0.2
-  select_form_field: "^2.2.0"
+  select_form_field: ^2.2.0
   datetime_picker_formfield: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
@@ -72,6 +72,7 @@ flutter:
     - assets/images/fundo.jpeg
     - assets/images/ufp.png
     - assets/images/defaultPhoto.png
+    - assets/logos/ufp.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

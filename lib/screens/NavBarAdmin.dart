@@ -23,7 +23,6 @@ class _NavBarAdminState extends State<NavBarAdmin> {
 
   void initState() {
     super.initState();
-    this.getInfo();
   }
 
   @override
@@ -35,12 +34,12 @@ class _NavBarAdminState extends State<NavBarAdmin> {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("$name"),
-            accountEmail: Text("$email"),
+            accountName: Text("Admin"),
+            accountEmail: Text("admin@ufp.pt"),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.asset(
-                  'assets/images/defaultPhoto.png',
+                  'assets/logos/ufp.jpg',
                   fit: BoxFit.cover,
                   width: 90,
                   height: 90,
@@ -103,18 +102,5 @@ class _NavBarAdminState extends State<NavBarAdmin> {
         ],
       ),
     );
-  }
-
-  getInfo() async {
-    var n = await storage.read(key: 'name');
-    var e = await storage.read(key: 'email');
-    //var p = await storage.read(key: 'picture');
-
-
-    setState(() {
-      name = n!;
-      email = e!;
-      //picture = p!;
-    });
   }
 }

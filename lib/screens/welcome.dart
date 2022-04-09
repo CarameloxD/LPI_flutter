@@ -241,7 +241,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           } else{
             await attemptLogInAdmin(studentNumber, password, context);
             if (state == 0) {
-              print("tou maninho");
               _showDialog(context); //mensagem de erro ao dar login
             } else{
               Navigator.push(

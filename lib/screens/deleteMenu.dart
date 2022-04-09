@@ -1,13 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'NavBar.dart';
-import 'inserts/insertClass.dart';
-import 'inserts/insertClassroom.dart';
-import 'inserts/insertCourse.dart';
-import 'inserts/insertSchedule.dart';
-import 'inserts/insertStudent.dart';
-import 'inserts/insertSubject.dart';
-import 'inserts/insertSubscription.dart';
-import 'inserts/insertTeacher.dart';
+import 'package:http/http.dart' as http;
 import 'deletes/deleteStudent.dart';
 
 class DeleteMenu extends StatefulWidget {
