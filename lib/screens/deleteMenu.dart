@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'NavBar.dart';
-import 'package:http/http.dart' as http;
+import 'package:sistema_presencas/screens/NavBarAdmin.dart';
 import 'deletes/deleteStudent.dart';
 
 class DeleteMenu extends StatefulWidget {
@@ -18,7 +15,7 @@ class _DeleteMenuState extends State<DeleteMenu> {
           centerTitle: true,
           title: Text('Delete Menu'),
           backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
-      drawer: NavBar(),
+      drawer: NavBarAdmin(),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
         child: GridView.count(

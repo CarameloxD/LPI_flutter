@@ -70,7 +70,7 @@ class _NavBarAdminState extends State<NavBarAdmin> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.insert_drive_file),
+            leading: Icon(Icons.add),
             title: Text('Insert Menu'),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -78,7 +78,7 @@ class _NavBarAdminState extends State<NavBarAdmin> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.insert_drive_file),
+            leading: Icon(Icons.remove),
             title: Text('Delete Menu'),
             onTap: () {
               Navigator.of(context).pushReplacement(

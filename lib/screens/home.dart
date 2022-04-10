@@ -13,14 +13,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var subject = '', startingTime = '', endingTime = '';
+  final List<Map<String, dynamic>> _schedules = [];
 
   void initState() {
     super.initState();
-    this.getData();
+    this.getStudent();
+    this.getSchedulesByStudent();
   }
-
-  final List<String> _myList = List.generate(100, (index) => 'Product $index');
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +37,26 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Text("Dia de hoje"),
               Flexible(
-                child: Center(
+                child: Container(
                   child: ListView.separated(
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return ClassItem();
+                      final schedule = _schedules[index];
+                      _schedules.clear();
+                      return Dismissible(
+                        key: Key(schedule['id'].toString()),
+                        child: ClassItem(
+                            identifier: schedule['identifier'],
+                            startingTime:
+                                DateTime.parse(schedule['startingTime']),
+                            endingTime: DateTime.parse(schedule['endingTime']),
+                            name: schedule['name']),
+                        onDismissed: (_) {
+                          _schedules.removeAt(index);
+                        },
+                      );
                     },
-                    itemCount: 2,
+                    itemCount: _schedules.length,
                     separatorBuilder: (context, index) => const Divider(),
                   ),
                 ),
@@ -53,22 +66,38 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-
-  getData() async {
+  getStudent() async {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "studentNumber");
-    final response =
-    await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/student/$number'));
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/$number'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
-      await storage.write(key: 'name', value: jsonResponse['data']['name']);
-      await storage.write(key: 'email', value: jsonResponse['data']['email']);
+      await storage.write(key: 'name', value: jsonResponse['user']['name']);
+      await storage.write(key: 'email', value: jsonResponse['user']['email']);
+    }
+  }
 
-      setState(() {
-        subject = jsonResponse['subjectsName'];
-        startingTime = jsonResponse['schedulesStartingTime'];
-        endingTime = jsonResponse['schedulesEndingtime'];
+  getSchedulesByStudent() async {
+    final storage = new FlutterSecureStorage();
+    var number = await storage.read(key: "studentNumber");
+    final response = await http.get(Uri.parse(
+        'http://10.0.2.2:8081/api/v1/student/getSchedulesByStudent/$number/'));
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      List<dynamic> schedules = jsonResponse['schedules'];
+      schedules.forEach((schedules) {
+        setState(() {
+          _schedules.add({
+            "id": schedules['Id'],
+            "startingTime": schedules['StartingTime'],
+            "endingTime": schedules['EndingTime'],
+            "name": schedules['Name'],
+            "identifier": schedules['Identifier'],
+          });
+        });
+        print(_schedules);
       });
     }
   }

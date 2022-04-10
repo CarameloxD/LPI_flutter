@@ -11,7 +11,7 @@ class HomeScreenAdmin extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: Text('ADMIN'),
+          title: Text('Admin'),
           backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
       drawer: NavBarAdmin(),
     );

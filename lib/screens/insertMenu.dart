@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'NavBar.dart';
+import 'NavBarAdmin.dart';
 import 'inserts/insertAttendance.dart';
 import 'inserts/insertClass.dart';
 import 'inserts/insertClassroom.dart';
@@ -23,7 +23,7 @@ class _InsertMenuState extends State<InsertMenu> {
           centerTitle: true,
           title: Text('Insert Menu'),
           backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
-      drawer: NavBar(),
+      drawer: NavBarAdmin(),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
         child: GridView.count(
