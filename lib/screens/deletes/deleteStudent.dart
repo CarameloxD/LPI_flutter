@@ -20,7 +20,7 @@ class _deleteStudentState extends State<deleteStudent> {
   Future<int> attemptDelete(String id, BuildContext context) async {
 
     final response = await http.delete(
-        Uri.parse('http://10.0.2.2:8081/api/v1/student/$id/'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/student/$id'),
     );
     print("tou maninho?");
     print(response.statusCode);
@@ -58,6 +58,7 @@ class _deleteStudentState extends State<deleteStudent> {
               // In production enviroment, you may want to send some request to delete it on server side
               onDismissed: (_) {
                 setState(() {
+                  attemptDelete(_students[index]["key"].toString(), context);
                   _students.removeAt(index);
                 });
               },

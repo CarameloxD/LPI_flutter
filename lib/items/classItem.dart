@@ -1,22 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sistema_presencas/screens/ClassInfo.dart';
+
 
 class ClassItem extends StatelessWidget {
   final int identifier;
   final DateTime startingTime, endingTime;
-  final String name;
+  final String name, teacher;
 
   ClassItem(
-      {required this.identifier, required this.startingTime, required this.endingTime, required this.name});
+      {required this.identifier, required this.startingTime, required this.endingTime, required this.name, required this.teacher});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      /*onTap: () => Navigator.push(
+    return InkWell(
+      onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  EditAlarm(alarm: this.alarm, manager: manager))),*/
+              builder: (BuildContext context) => ClassInfo(identifier: identifier, startingTime: startingTime, endingTime: endingTime, name: name, teacher: teacher))),
       child: Builder(
         builder: (context) =>
             Card(
