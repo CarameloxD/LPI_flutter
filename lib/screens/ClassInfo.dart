@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 class ClassInfo extends StatelessWidget {
   final int identifier;
   final DateTime startingTime, endingTime;
-  final String name, teacher;
+  final String name, type,teacher;
 
   ClassInfo(
       {required this.identifier,
       required this.startingTime,
       required this.endingTime,
       required this.name,
+        required this.type,
       required this.teacher});
 
   @override
@@ -43,6 +44,28 @@ class ClassInfo extends StatelessWidget {
                     child: Center(
                   child: Text(name),
                 )),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                    child: Center(
+                        child: Text(
+                          "Type: ",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))),
+                VerticalDivider(width: 0.5),
+                Expanded(
+                    child: Center(
+                      child: Text(type),
+                    )),
               ],
             ),
             Padding(

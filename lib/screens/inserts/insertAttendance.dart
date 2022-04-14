@@ -30,8 +30,7 @@ class _insertAttendanceState extends State<insertAttendance> {
     });
     print(_idStudents);
     final response = await http.post(
-        Uri.parse(
-            'http://10.0.2.2:8081/api/v1/attendance/'),
+        Uri.parse('http://10.0.2.2:8081/api/v1/attendance/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -86,6 +85,8 @@ class _insertAttendanceState extends State<insertAttendance> {
                     print(val);
                     setState(() {
                       _idSchedule = val;
+                      _students.clear();
+                      _idStudents.clear();
                       getStudentsBySchedule(_idSchedule);
                     });
                   },
@@ -133,23 +134,38 @@ class _insertAttendanceState extends State<insertAttendance> {
   }
 
   getSchedules() async {
-    final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
+      print("\n");
       List<dynamic> schedules = jsonResponse['schedules'];
       schedules.forEach((schedules) {
         setState(() {
-          _schedules.add({"value": schedules['id'], "label": schedules['idClass']});
+          _schedules.add({
+            "value": schedules['Id'],
+            "label": schedules['ClassAcronym'] +
+                " | " +
+                DateTime.parse(schedules['StartingTime']).day.toString() +
+                "/" +
+                DateTime.parse(schedules['StartingTime']).month.toString() +
+                "/" +
+                DateTime.parse(schedules['StartingTime']).year.toString() +
+                " | " +
+                DateTime.parse(schedules['StartingTime']).hour.toString() +
+                ":" +
+                DateTime.parse(schedules['StartingTime']).minute.toString()
+          });
         });
       });
+      print(_schedules);
     }
   }
 
   getStudentsBySchedule(String id) async {
-    final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/$id/'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/$id/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

@@ -59,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               DateTime.parse(schedule['startingTime']),
                           endingTime: DateTime.parse(schedule['endingTime']),
                           name: schedule['name'],
+                          type: schedule['type'],
                           teacher: schedule['teacher'],
                         ),
                       );
@@ -101,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
             "startingTime": schedules['StartingTime'],
             "endingTime": schedules['EndingTime'],
             "name": schedules['Name'],
+            "type": schedules['Type'],
             "identifier": schedules['Identifier'],
             "teacher": schedules['Teacher'],
           });

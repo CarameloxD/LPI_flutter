@@ -6,10 +6,10 @@ import 'package:sistema_presencas/screens/ClassInfo.dart';
 class ClassItem extends StatelessWidget {
   final int identifier;
   final DateTime startingTime, endingTime;
-  final String name, teacher;
+  final String name, type,teacher;
 
   ClassItem(
-      {required this.identifier, required this.startingTime, required this.endingTime, required this.name, required this.teacher});
+      {required this.identifier, required this.startingTime, required this.endingTime, required this.name, required this.type, required this.teacher});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ClassItem extends StatelessWidget {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => ClassInfo(identifier: identifier, startingTime: startingTime, endingTime: endingTime, name: name, teacher: teacher))),
+              builder: (BuildContext context) => ClassInfo(identifier: identifier, startingTime: startingTime, endingTime: endingTime, name: name, type: type,teacher: teacher))),
       child: Builder(
         builder: (context) =>
             Card(
