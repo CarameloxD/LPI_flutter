@@ -29,60 +29,63 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   final storage = new FlutterSecureStorage();
 
-  Future<int> attemptLogIn(
-      String studentNumber, String password, BuildContext context) async {
-    final response = await http.post(
-        Uri.parse('https://siws.ufp.pt/api/v1/login'),
-        body: {"username": studentNumber, "password": password});
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      await storage.write(key: 'studentNumber', value: studentNumber);
-      print(response.body);
-      if (jsonResponse != null) {
-        state = 1;
-        await storage.write(
-            key: "token", value: json.decode(response.body)['message']);
-        var token = json.decode(response.body)['message'];
-      }
-      await storage.write(key: 'admin', value: 'no');
-      return 1;
-    } else {
-      state = 0;
-      print("Incorrect");
-      return 0;
+  bool isAdmin(String username, String password){
+    if (username == 'admin' && password == 'admin'){
+      return true;
     }
-  }
-  Future<int> attemptLogInAdmin(
-      String username, String password, BuildContext context) async {
-
-    var response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/admin/login'),
-        body: convert.jsonEncode(
-            <String, String>{"username": username, "password": password}));
-    var jsonResponse;
-    print(response.body);
-    if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
-      if (jsonResponse != null) {
-        state = 1;
-        var token = json.decode(response.body)['token'];
-        var email = json.decode(response.body)['email'];
-        var nome = json.decode(response.body)['username'];
-
-        print(nome);
-
-        await storage.write(key: 'jwt', value: token);
-        await storage.write(key: 'email', value: email);
-        await storage.write(key: 'admin', value: 'yes');
-      }
-      return 1;
-    } else {
-      state = 0;
-      print("Incorrect");
-      return 0;
-    }
+    return false;
   }
 
+  Future<int> attemptLogIn(String studentNumber, String password, BuildContext context) async {
+
+    if(isAdmin(studentNumber,password)){
+      var response = await http.post(
+          Uri.parse('http://10.0.2.2:8081/api/v1/admin/login'),
+          body: convert.jsonEncode(
+              <String, String>{"username": studentNumber, "password": password}));
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        if (jsonResponse != null) {
+          state = 1;
+          var token = json.decode(response.body)['token'];
+          var email = json.decode(response.body)['email'];
+          var nome = json.decode(response.body)['username'];
+
+          await storage.write(key: 'jwt', value: token);
+          await storage.write(key: 'email', value: email);
+          await storage.write(key: 'admin', value: 'yes');
+        }
+        return 1;
+      } else{
+        state = 0;
+        print("Incorrect");
+        return 0;
+      }
+    } else{
+      final response = await http.post(
+          Uri.parse('https://siws.ufp.pt/api/v1/login'),
+          body: {"username": studentNumber, "password": password});
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        await storage.write(key: 'studentNumber', value: studentNumber);
+        print(response.body);
+        if (jsonResponse != null) {
+          state = 1;
+          await storage.write(
+              key: "token", value: json.decode(response.body)['message']);
+          var token = json.decode(response.body)['message'];
+        }
+        await storage.write(key: 'admin', value: 'no');
+        return 1;
+    } else{
+        state = 0;
+        print("Incorrect");
+        return 0;
+      }
+    }
+  }
 
   _showDialog(context) {
     return showDialog(
@@ -202,12 +205,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return double.tryParse(s) != null;
   }
 
-  bool isAdmin(String username, String password){
-    if (username == 'admin' && password == 'admin'){
-      return true;
-    }
-    return false;
-  }
+
 
   Widget _buildLoginBtn() {
     return Container(
@@ -239,7 +237,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               );
             }
           } else{
-            await attemptLogInAdmin(studentNumber, password, context);
+            await attemptLogIn(studentNumber, password, context);
             if (state == 0) {
               _showDialog(context); //mensagem de erro ao dar login
             } else{
