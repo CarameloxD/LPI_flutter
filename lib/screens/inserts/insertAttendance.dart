@@ -20,8 +20,7 @@ class _insertAttendanceState extends State<insertAttendance> {
     this.getSchedules();
   }
 
-  Future<int> attemptInsert(
-      List<Map> _studentslist, String idSchedule, BuildContext context) async {
+  Future<int> attemptInsert(List<Map> _studentslist, String idSchedule, BuildContext context) async {
     _studentslist.forEach((element) {
       print(element);
       if (element['isChecked'] == true) {

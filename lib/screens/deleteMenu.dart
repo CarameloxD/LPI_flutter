@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sistema_presencas/screens/NavBarAdmin.dart';
 import 'deletes/deleteStudent.dart';
+import 'deletes/deleteCourse.dart';
+import 'deletes/deleteClass.dart';
+import 'deletes/deleteTeacher.dart';
+import 'deletes/deleteClassroom.dart';
+import 'deletes/deleteSubject.dart';
+import 'deletes/deleteSubscription.dart';
+
 
 class DeleteMenu extends StatefulWidget {
   @override
@@ -23,6 +30,14 @@ class _DeleteMenuState extends State<DeleteMenu> {
           padding: EdgeInsets.all(3.0),
           children: <Widget>[
             makeDashboardItem("Student", Icons.school, deleteStudent()),
+            makeDashboardItem("Course", Icons.work, deleteCourse()),
+            makeDashboardItem("Subscription", Icons.people_alt_outlined, deleteSubscription()),
+            makeDashboardItem("Subject", Icons.subject, deleteSubjects()),
+            makeDashboardItem("Teacher", Icons.account_circle, deleteTeacher()),
+            makeDashboardItem("Class", Icons.people, deleteClass()),
+            makeDashboardItem("Classroom", Icons.meeting_room, deleteClassroom()),
+            /*  makeDashboardItem("Schedule", Icons.event, insertSchedule()),
+            makeDashboardItem("Attendance", Icons.event_available, insertAttendance()),*/
           ],
         ),
       ),
@@ -63,4 +78,5 @@ class _DeleteMenuState extends State<DeleteMenu> {
           ),
         ));
   }
+
 }

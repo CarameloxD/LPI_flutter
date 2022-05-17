@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:select_form_field/select_form_field.dart';
 
-class insertSubscription extends StatefulWidget {
+class deleteSubscription extends StatefulWidget {
   @override
-  _insertSubscriptionState createState() => _insertSubscriptionState();
+  _deleteSubscriptionState createState() => _deleteSubscriptionState();
 }
 
-class _insertSubscriptionState extends State<insertSubscription> {
+class _deleteSubscriptionState extends State<deleteSubscription> {
   final _formKey = GlobalKey<FormState>();
   var _idCourse = '';
   final List<Map<String, dynamic>> _courses = [];
@@ -18,10 +18,9 @@ class _insertSubscriptionState extends State<insertSubscription> {
   void initState() {
     super.initState();
     this.getCourses();
-    this.getStudents();
   }
 
-  Future<int> attemptInsert(
+  Future<int> attemptDelete(
       List<Map> _studentslist, String idCourse, BuildContext context) async {
     _studentslist.forEach((element) {
       print(element);
@@ -29,10 +28,9 @@ class _insertSubscriptionState extends State<insertSubscription> {
         _idStudents.add(element['key']);
       }
     });
-    print(_idStudents);
-    final response = await http.post(
+    final response = await http.delete(
         Uri.parse(
-            'http://10.0.2.2:8081/api/v1/subscription/'),
+            'http://10.0.2.2:8081/api/v1/subscription/delete'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -43,11 +41,11 @@ class _insertSubscriptionState extends State<insertSubscription> {
     print(response.body);
     print(response.statusCode);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Subscription inserted')),
+        const SnackBar(content: Text('Subscription deleted')),
       );
       return 1;
     } else {
@@ -61,7 +59,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
-            title: Text('Insert Subscription'),
+            title: Text('Delete Subscription'),
             backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
         body: Container(
           child: Form(
@@ -87,6 +85,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
                     print(val);
                     setState(() {
                       _idCourse = val;
+                      getStudents(_idCourse);
                     });
                   },
                   onSaved: (val) => print(val),
@@ -95,6 +94,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                 ),
                 Expanded(
+
                   child: ListView(
                     children: _students.map((student) {
                       return CheckboxListTile(
@@ -120,7 +120,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptInsert(_students, _idCourse, context);
+                        await attemptDelete(_students, _idCourse, context);
                       }
                     },
                     child: const Text('Submit'),
@@ -147,9 +147,9 @@ class _insertSubscriptionState extends State<insertSubscription> {
     }
   }
 
-  getStudents() async {
+  getStudents(String id) async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/'));
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/getStudentsByCourse/$id/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
