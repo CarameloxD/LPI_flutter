@@ -7,6 +7,7 @@ import 'deletes/deleteTeacher.dart';
 import 'deletes/deleteClassroom.dart';
 import 'deletes/deleteSubject.dart';
 import 'deletes/deleteSubscription.dart';
+import 'deletes/deleteSchedule.dart';
 
 
 class DeleteMenu extends StatefulWidget {
@@ -36,8 +37,8 @@ class _DeleteMenuState extends State<DeleteMenu> {
             makeDashboardItem("Teacher", Icons.account_circle, deleteTeacher()),
             makeDashboardItem("Class", Icons.people, deleteClass()),
             makeDashboardItem("Classroom", Icons.meeting_room, deleteClassroom()),
-            /*  makeDashboardItem("Schedule", Icons.event, insertSchedule()),
-            makeDashboardItem("Attendance", Icons.event_available, insertAttendance()),*/
+            makeDashboardItem("Schedule", Icons.event,deleteSchedule()),
+            //makeDashboardItem("Attendance", Icons.event_available, insertAttendance())
           ],
         ),
       ),

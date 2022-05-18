@@ -3,41 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:select_form_field/select_form_field.dart';
 
-class deleteSubscription extends StatefulWidget {
+class deleteSchedule extends StatefulWidget {
   @override
-  _deleteSubscriptionState createState() => _deleteSubscriptionState();
+  _deleteScheduleState createState() => _deleteScheduleState();
 }
 
-class _deleteSubscriptionState extends State<deleteSubscription> {
+class _deleteScheduleState extends State<deleteSchedule> {
   final _formKey = GlobalKey<FormState>();
-  var _idCourse = '';
+  var _idClass = '';
+  final List<Map<String, dynamic>> _classes = [];
+  final List<Map> _schedules = [];
+  final List<int> _idSchedules = [];
 
-  final List<Map<String, dynamic>> _courses = [];
-  final List<Map> _students = [];
-  final List<int> _idStudents = [];
 
   void initState() {
     super.initState();
-    this.getCourses();
+    this.getClasses();
   }
 
-  Future<int> attemptDelete(
-      List<Map> _studentslist, String idCourse, BuildContext context) async {
-    _studentslist.forEach((element) {
+  Future<int> attemptDelete(List<Map> _scheduleslist, String idClass, BuildContext context) async {
+    _scheduleslist.forEach((element) {
       print(element);
       if (element['isChecked'] == true) {
-        _idStudents.add(element['key']);
+        _idSchedules.add(element['key']);
       }
     });
     final response = await http.delete(
         Uri.parse(
-            'http://10.0.2.2:8081/api/v1/subscription/delete'),
+            'http://10.0.2.2:8081/api/v1/schedule/delete'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'IdCourse': int.parse(idCourse),
-          'IdStudents': _idStudents
+          'IdClass': int.parse(idClass),
+          'IdSchedules': _idSchedules
         }));
     print(response.body);
     print(response.statusCode);
@@ -46,7 +45,7 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Subscription deleted')),
+        const SnackBar(content: Text('Schedule deleted')),
       );
       return 1;
     } else {
@@ -60,7 +59,7 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
-            title: Text('Delete Subscription'),
+            title: Text('Delete Schedule'),
             backgroundColor: Color.fromRGBO(56, 180, 74, 1)),
         body: Container(
           child: Form(
@@ -75,18 +74,18 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
                   type: SelectFormFieldType.dropdown,
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return 'Please insert a course';
+                      return 'Please insert a class';
                     }
                     return null;
                   },
                   icon: Icon(Icons.work),
-                  labelText: 'Course',
-                  items: _courses,
+                  labelText: 'Class',
+                  items: _classes,
                   onChanged: (val) {
                     print(val);
                     setState(() {
-                      _idCourse = val;
-                      getStudents(_idCourse);
+                      _idClass = val;
+                      getSchedules(_idClass);
                     });
                   },
                   onSaved: (val) => print(val),
@@ -97,13 +96,13 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
                 Expanded(
 
                   child: ListView(
-                    children: _students.map((student) {
+                    children: _schedules.map((schedule) {
                       return CheckboxListTile(
-                          value: student['isChecked'],
-                          title: Text(student['value']!),
+                          value: schedule['isChecked'],
+                          title: Text(schedule['value']),
                           onChanged: (newValue) {
                             setState(() {
-                              student['isChecked'] = newValue;
+                              schedule['isChecked'] = newValue;
                             });
                           });
                     }).toList(),
@@ -121,7 +120,7 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await attemptDelete(_students, _idCourse, context);
+                        await attemptDelete(_schedules, _idClass, context);
                       }
                     },
                     child: const Text('Submit'),
@@ -132,34 +131,34 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
           ),
         ));
   }
-
-  getCourses() async {
-    final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/'));
+  getClasses() async {
+    final response =
+    await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/class/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
-      List<dynamic> courses = jsonResponse['courses'];
-      courses.forEach((courses) {
+      List<dynamic> classes = jsonResponse['classes'];
+      classes.forEach((classes) {
         setState(() {
-          _courses.add({"value": courses['id'], "label": courses['title']});
+          _classes
+              .add({"value": classes['id'], "label": classes['classAcronym']});
         });
       });
     }
   }
 
-  getStudents(String id) async {
+
+  getSchedules(String id) async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/getStudentsByCourse/$id/'));
+        .get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/getSchedulesByClass/$id/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
-      List<dynamic> students = jsonResponse['students'];
-      students.forEach((students) {
+      List<dynamic> schedules = jsonResponse['schedules'];
+      schedules.forEach((schedules) {
         setState(() {
-          _students.add({
-            "key": students['id'],
-            "value": students['name'],
+          _schedules.add({
+            "key": schedules['Id'],
+            "value": schedules['Name'],
             "isChecked": false
           });
         });
