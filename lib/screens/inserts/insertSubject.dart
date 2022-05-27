@@ -12,6 +12,7 @@ class _insertSubjectState extends State<insertSubject> {
   final _formKey = GlobalKey<FormState>();
   var _name = '', _type = '', _idCourse = '';
   final List<Map<String, dynamic>> _courses = [];
+  final TextEditingController _subjectController = new TextEditingController();
 
   void initState() {
     super.initState();
@@ -33,6 +34,7 @@ class _insertSubjectState extends State<insertSubject> {
           'Type': type,
           'IdCourse': int.parse(idCourse)
         }));
+    _subjectController.clear();
     print(response.body);
     print(response.statusCode);
 
@@ -94,6 +96,7 @@ class _insertSubjectState extends State<insertSubject> {
                   ),
                 ),
                 TextFormField(
+                  controller: _subjectController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {

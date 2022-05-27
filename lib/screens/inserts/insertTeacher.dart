@@ -10,6 +10,9 @@ class insertTeacher extends StatefulWidget {
 class _insertTeacherState extends State<insertTeacher> {
   final _formKey = GlobalKey<FormState>();
   var _name = '', _email = '', _username = '';
+  final TextEditingController _nameController = new TextEditingController();
+  final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _usernameController = new TextEditingController();
 
   Future<int> attemptInsert(
       String name, String email, String username, BuildContext context) async {
@@ -65,6 +68,7 @@ class _insertTeacherState extends State<insertTeacher> {
                   ),
                 ),
                 TextFormField(
+                  controller: _nameController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -86,6 +90,7 @@ class _insertTeacherState extends State<insertTeacher> {
                   ),
                 ),
                 TextFormField(
+                    controller: _emailController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -107,6 +112,7 @@ class _insertTeacherState extends State<insertTeacher> {
                   ),
                 ),
                 TextFormField(
+                    controller: _usernameController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -132,6 +138,9 @@ class _insertTeacherState extends State<insertTeacher> {
                         );
                         await attemptInsert(_name, _email, _username, context);
                       }
+                      _nameController.clear();
+                      _emailController.clear();
+                      _usernameController.clear();
                     },
                     child: const Text('Submit'),
                   ),

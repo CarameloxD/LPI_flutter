@@ -10,6 +10,7 @@ class insertCourse extends StatefulWidget {
 class _insertCourseState extends State<insertCourse> {
   final _formKey = GlobalKey<FormState>();
   var _title = '';
+  final TextEditingController _titleController = new TextEditingController();
 
   Future<int> attemptInsert(String title, BuildContext context) async {
     print(title);
@@ -21,6 +22,7 @@ class _insertCourseState extends State<insertCourse> {
         body: jsonEncode(<String, dynamic>{
           'Title': title,
         }));
+    _titleController.clear();
     print(response.body);
     print(response.statusCode);
 
@@ -60,6 +62,7 @@ class _insertCourseState extends State<insertCourse> {
                   ),
                 ),
                 TextFormField(
+                  controller: _titleController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {
