@@ -83,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
       var jsonResponse = json.decode(response.body);
       await storage.write(key: 'name', value: jsonResponse['user']['name']);
       await storage.write(key: 'email', value: jsonResponse['user']['email']);
+      await storage.write(key: 'picture', value: jsonResponse['user']['picture']);
     }
   }
 
