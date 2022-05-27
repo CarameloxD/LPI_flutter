@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sistema_presencas/screens/profile.dart';
 import 'package:sistema_presencas/screens/schedule.dart';
 import 'package:sistema_presencas/screens/settings.dart';
 import 'package:sistema_presencas/screens/welcome.dart';
@@ -55,18 +56,11 @@ class _NavBarState extends State<NavBar> {
             ),
           ),
           ListTile(
-              leading: Icon(Icons.favorite),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => HomeScreen()));
-              }),
-          ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap: () {
-              /*Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => UserProfile()));*/
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => UserProfilePage()));
             },
           ),
           ListTile(

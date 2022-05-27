@@ -7,10 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sistema_presencas/screens/HomeScreenAdmin.dart';
 import 'package:sistema_presencas/screens/home.dart';
 import 'package:sistema_presencas/utilities/constants.dart';
-
 import 'homeTeacher.dart';
-
-
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
