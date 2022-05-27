@@ -11,6 +11,8 @@ class insertClassroom extends StatefulWidget {
 class _insertClassroomState extends State<insertClassroom> {
   final _formKey = GlobalKey<FormState>();
   var _identifier = 0, _capacity = 0;
+  final TextEditingController _identifierController = new TextEditingController();
+  final TextEditingController _capacityController = new TextEditingController();
 
   Future<int> attemptInsert(
       int identifier, int capacity, BuildContext context) async {
@@ -23,6 +25,8 @@ class _insertClassroomState extends State<insertClassroom> {
           'Identifier': identifier,
           'Capacity': capacity,
         }));
+    _identifierController.clear();
+    _capacityController.clear();
 
     if (response.statusCode == 201) {
       var jsonResponse = json.decode(response.body);
@@ -60,6 +64,7 @@ class _insertClassroomState extends State<insertClassroom> {
                   ),
                 ),
                 TextFormField(
+                  controller: _identifierController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -81,6 +86,7 @@ class _insertClassroomState extends State<insertClassroom> {
                   ),
                 ),
                 TextFormField(
+                  controller: _capacityController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {

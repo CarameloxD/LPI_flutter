@@ -13,6 +13,7 @@ class _insertClassState extends State<insertClass> {
   var _ClassName = '', _idSubject = '', _idTeacher = '';
   final List<Map<String, dynamic>> _subjects = [];
   final List<Map<String, dynamic>> _teachers = [];
+  final TextEditingController _classController = new TextEditingController();
 
   void initState() {
     super.initState();
@@ -31,6 +32,7 @@ class _insertClassState extends State<insertClass> {
           'IdSubject': int.parse(idSubject),
           'IdTeacher': int.parse(idTeacher),
         }));
+    _classController.clear();
     print(response.body);
     print(response.statusCode);
 
@@ -70,6 +72,7 @@ class _insertClassState extends State<insertClass> {
                   ),
                 ),
                 TextFormField(
+                  controller: _classController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {

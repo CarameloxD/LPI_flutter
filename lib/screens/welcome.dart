@@ -19,27 +19,28 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   bool _rememberMe = false;
   int state = 0;
-  final TextEditingController _studentNumberController =
+  List<String> adminEmails = ['carvalhomiguel17@gmail.com', '5.5antoniodaniel@gmail.com', 'joaopedromelo@live.com.pt'];
+  final TextEditingController _usernameController =
       TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _validate_studentNumber = false, _validate_password = false;
+  bool _validate_username = false;
 
   final storage = new FlutterSecureStorage();
 
-  bool isAdmin(String username, String password){
-    if (username == 'admin' && password == 'admin'){
+  bool isAdmin(String email){
+    if (adminEmails.contains(email)){
       return true;
     }
     return false;
   }
 
-  Future<int> attemptLogIn(String studentNumber, String password, BuildContext context) async {
+  Future<int> attemptLogIn(String username, String password, BuildContext context) async {
 
-    if(isAdmin(studentNumber,password)){
+    if(isAdmin(username)){
       var response = await http.post(
           Uri.parse('http://10.0.2.2:8081/api/v1/admin/login'),
           body: convert.jsonEncode(
-              <String, String>{"username": studentNumber, "password": password}));
+              <String, String>{"username": username, "password": password}));
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
@@ -62,17 +63,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     } else{
       final response = await http.post(
           Uri.parse('https://siws.ufp.pt/api/v1/login'),
-          body: {"username": studentNumber, "password": password});
+          body: {"username": username, "password": password});
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        await storage.write(key: 'studentNumber', value: studentNumber);
+        await storage.write(key: 'studentNumber', value: username);
         print(response.body);
         if (jsonResponse != null) {
           state = 1;
-          await storage.write(
-              key: "token", value: json.decode(response.body)['message']);
-          var token = json.decode(response.body)['message'];
         }
         await storage.write(key: 'admin', value: 'no');
         return 1;
@@ -115,7 +113,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
-            controller: _studentNumberController,
+            controller: _usernameController,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
@@ -211,33 +209,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          var studentNumber = _studentNumberController.text;
+          var username = _usernameController.text;
           var password = _passwordController.text;
 
           setState(() {});
 
-          if (_validate_studentNumber != true && !isAdmin(studentNumber,password)) {
-            await attemptLogIn(studentNumber, password, context);
+          if (_validate_username != true && !isAdmin(username)) {
+            await attemptLogIn(username, password, context);
 
             if (state == 0) {
               _showDialog(context); //mensagem de erro ao dar login
-            } else if (isNumeric(studentNumber)) {
-              // se o studentNumber for so numeros..
+            } else if (isNumeric(username)) {
+              // Se o username for so numeros, utilizador é um Aluno
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
               );
             } else {
+              // Se o username for com letras, utilizador é um Professor
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreenTeacher()),
               );
             }
           } else{
-            await attemptLogIn(studentNumber, password, context);
+            await attemptLogIn(username, password, context);
             if (state == 0) {
               _showDialog(context); //mensagem de erro ao dar login
             } else{
+              // Se o username for um email, utilizador é um Admin
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreenAdmin()),

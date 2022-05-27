@@ -12,6 +12,9 @@ class insertStudent extends StatefulWidget {
 class _insertStudentState extends State<insertStudent> {
   final _formKey = GlobalKey<FormState>();
   var _name = '', _email = '', _studentNumber = '';
+  final TextEditingController _nameController = new TextEditingController();
+  final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _studentController = new TextEditingController();
 
   Future<int> attemptInsert(String name, String email, String student_number,
       BuildContext context) async {
@@ -28,6 +31,9 @@ class _insertStudentState extends State<insertStudent> {
           'Email': email,
           'student_number': int.parse(student_number)
         }));
+    _nameController.clear();
+    _emailController.clear();
+    _studentController.clear();
     print(response.body);
     print(response.statusCode);
 
@@ -67,6 +73,7 @@ class _insertStudentState extends State<insertStudent> {
                   ),
                 ),
                 TextFormField(
+                  controller: _nameController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -88,6 +95,7 @@ class _insertStudentState extends State<insertStudent> {
                   ),
                 ),
                 TextFormField(
+                  controller: _emailController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -109,6 +117,7 @@ class _insertStudentState extends State<insertStudent> {
                   ),
                 ),
                 TextFormField(
+                  controller: _studentController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                   if (value == null || value.isEmpty) {

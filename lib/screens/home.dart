@@ -55,8 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         key: Key(schedule['id'].toString()),
                         child: ClassItem(
                           identifier: schedule['identifier'],
-                          startingTime:
-                              DateTime.parse(schedule['startingTime']),
+                          startingTime: DateTime.parse(schedule['startingTime']),
                           endingTime: DateTime.parse(schedule['endingTime']),
                           name: schedule['name'],
                           type: schedule['type'],

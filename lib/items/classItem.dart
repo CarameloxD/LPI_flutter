@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sistema_presencas/screens/ClassInfo.dart';
 
+import '../screens/scanner.dart';
+
 
 class ClassItem extends StatelessWidget {
   final int identifier;
@@ -48,9 +50,14 @@ class ClassItem extends StatelessWidget {
                         Text("Sala: $identifier"),
                       ],
                     ),
-                    Icon(
-                      Icons.event,
+                    IconButton(
+                      icon: const Icon(Icons.event),
+                      onPressed: (){
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => Scanner()));
+                      }
                     )
+
                   ],
                 ),
               ),
