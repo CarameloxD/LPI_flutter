@@ -5,7 +5,7 @@ import 'package:sistema_presencas/screens/settings.dart';
 import 'package:sistema_presencas/screens/welcome.dart';
 import 'package:sistema_presencas/screens/splashpage.dart';
 
-const SERVER_IP = 'https://40fa-2001-8a0-e7c4-5900-39b8-bb0e-e7b7-2e70.eu.ngrok.io/api/v1/';
+const SERVER_IP = '  https://ae8f-2001-818-eaff-300-f8dc-2c35-8fde-fd69.eu.ngrok.io/api/v1/';
 
 
 void main() {

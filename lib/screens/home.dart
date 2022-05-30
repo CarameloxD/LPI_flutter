@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "studentNumber");
     final response = await http.get(Uri.parse(
-        SERVER_IP + '/student/getSchedulesByStudent/$number'));
+        SERVER_IP + 'student/getSchedulesByStudent/$number'));
     print(response.body);
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);

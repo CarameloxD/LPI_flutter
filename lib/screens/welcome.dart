@@ -63,14 +63,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       }
     } else{
       print(username);
+      print(password);
       final response = await http.post(
         // https://siws.ufp.pt/api/v1/login'
-          Uri.parse('https://siws.ufp.pt/api/v1/login'),
-          body: {"username": username, "password": password});
+          Uri.parse(SERVER_IP + 'teacher/login'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, dynamic>{
+            'username': username,
+            'password': password,
+          }));
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        await storage.write(key: 'studentNumber', value: username);
+        await storage.write(key: "teacher", value: username);
         print(response.body);
         if (jsonResponse != null) {
           state = 1;
