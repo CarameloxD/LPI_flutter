@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:select_form_field/select_form_field.dart';
 
+import '../../main.dart';
+
 class insertClass extends StatefulWidget {
   @override
   _insertClassState createState() => _insertClassState();
@@ -23,7 +25,7 @@ class _insertClassState extends State<insertClass> {
 
   Future<int> attemptInsert(String ClassName, String idSubject, String idTeacher,BuildContext context) async {
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/class/'),
+        Uri.parse(SERVER_IP + 'class/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -155,7 +157,7 @@ class _insertClassState extends State<insertClass> {
 
   getSubjects() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/subject/'));
+        .get(Uri.parse(SERVER_IP + 'subject/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       List<dynamic> subjects = jsonResponse['subjects'];
@@ -169,7 +171,7 @@ class _insertClassState extends State<insertClass> {
 
   getTeachers() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/teacher/'));
+        .get(Uri.parse(SERVER_IP + 'teacher/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       List<dynamic> teachers = jsonResponse['teachers'];

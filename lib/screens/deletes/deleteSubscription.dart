@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:select_form_field/select_form_field.dart';
 
+import '../../main.dart';
+
 class deleteSubscription extends StatefulWidget {
   @override
   _deleteSubscriptionState createState() => _deleteSubscriptionState();
@@ -31,7 +33,7 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
     });
     final response = await http.delete(
         Uri.parse(
-            'http://10.0.2.2:8081/api/v1/subscription/delete'),
+           SERVER_IP + 'subscription/delete'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -86,6 +88,7 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
                     print(val);
                     setState(() {
                       _idCourse = val;
+                      _students.clear();
                       getStudents(_idCourse);
                     });
                   },
@@ -135,7 +138,7 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
 
   getCourses() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/'));
+        .get(Uri.parse(SERVER_IP + 'course/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
@@ -150,7 +153,7 @@ class _deleteSubscriptionState extends State<deleteSubscription> {
 
   getStudents(String id) async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/getStudentsByCourse/$id/'));
+        .get(Uri.parse(SERVER_IP + 'student/getStudentsByCourse/$id'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

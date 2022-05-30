@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../../main.dart';
 import '../../utilities/constants.dart';
 import '../NavBar.dart';
 
@@ -22,7 +23,7 @@ class _insertStudentState extends State<insertStudent> {
     print(email);
     print(student_number);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/student/'),
+        Uri.parse(SERVER_IP + 'student/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

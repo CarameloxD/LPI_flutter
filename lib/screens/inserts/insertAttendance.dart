@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:select_form_field/select_form_field.dart';
 
+import '../../main.dart';
+
 class insertAttendance extends StatefulWidget {
   @override
   _insertAttendanceState createState() => _insertAttendanceState();
@@ -29,7 +31,7 @@ class _insertAttendanceState extends State<insertAttendance> {
     });
     print(_idStudents);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/attendance/'),
+        Uri.parse(SERVER_IP + 'attendance/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -134,7 +136,7 @@ class _insertAttendanceState extends State<insertAttendance> {
 
   getSchedules() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/'));
+        await http.get(Uri.parse(SERVER_IP + 'schedule/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
@@ -164,7 +166,7 @@ class _insertAttendanceState extends State<insertAttendance> {
 
   getStudentsBySchedule(String id) async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/$id/'));
+        await http.get(Uri.parse(SERVER_IP + 'schedule/$id'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

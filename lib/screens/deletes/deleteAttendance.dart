@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:select_form_field/select_form_field.dart';
 
+import '../../main.dart';
+
 class deleteAttendance extends StatefulWidget {
   @override
   _deleteAttendanceState createState() => _deleteAttendanceState();
@@ -29,7 +31,7 @@ class _deleteAttendanceState extends State<deleteAttendance> {
     });
     print(_idStudents);
     final response = await http.delete(
-        Uri.parse('http://10.0.2.2:8081/api/v1/attendance/delete'),
+        Uri.parse(SERVER_IP + 'attendance/delete'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -134,7 +136,7 @@ class _deleteAttendanceState extends State<deleteAttendance> {
 
   getSchedules() async {
     final response =
-    await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/'));
+    await http.get(Uri.parse(SERVER_IP + 'schedule/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
@@ -164,7 +166,7 @@ class _deleteAttendanceState extends State<deleteAttendance> {
 
   getAttendingStudentsBySchedule(String id) async {
     final response =
-    await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/attend/$id/'));
+    await http.get(Uri.parse(SERVER_IP +'schedule/attend/$id'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:select_form_field/select_form_field.dart';
 
+import '../../main.dart';
+
 class insertSubscription extends StatefulWidget {
   @override
   _insertSubscriptionState createState() => _insertSubscriptionState();
@@ -32,7 +34,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
     print(_idStudents);
     final response = await http.post(
         Uri.parse(
-            'http://10.0.2.2:8081/api/v1/subscription/'),
+           SERVER_IP +'subscription/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -134,7 +136,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
 
   getCourses() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/course/'));
+        .get(Uri.parse(SERVER_IP +'course/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
@@ -149,7 +151,7 @@ class _insertSubscriptionState extends State<insertSubscription> {
 
   getStudents() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/'));
+        .get(Uri.parse(SERVER_IP + 'student/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

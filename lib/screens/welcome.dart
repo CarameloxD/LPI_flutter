@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sistema_presencas/screens/HomeScreenAdmin.dart';
 import 'package:sistema_presencas/screens/home.dart';
 import 'package:sistema_presencas/utilities/constants.dart';
+import '../main.dart';
 import 'homeTeacher.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -38,7 +39,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     if(isAdmin(username)){
       var response = await http.post(
-          Uri.parse('http://10.0.2.2:8081/api/v1/admin/login'),
+          Uri.parse(SERVER_IP + 'admin/login'),
           body: convert.jsonEncode(
               <String, String>{"username": username, "password": password}));
 
@@ -61,7 +62,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         return 0;
       }
     } else{
+      print(username);
       final response = await http.post(
+        // https://siws.ufp.pt/api/v1/login'
           Uri.parse('https://siws.ufp.pt/api/v1/login'),
           body: {"username": username, "password": password});
 
@@ -104,7 +107,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Student Number',
+          'Username',
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -117,7 +120,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
-              hintText: 'Enter your Student Number',
+              hintText: 'Enter your username',
               hintStyle: kHintTextStyle,
               prefixIcon: Icon(
                 Icons.account_circle,
@@ -166,41 +169,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     );
   }
 
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      height: 60.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value!;
-                });
-              },
-            ),
-          ),
-          Text(
-            'Remember me',
-            style: kLabelStyle,
-          ),
-        ],
-      ),
-    );
-  }
-
   bool isNumeric(String s) {
     if (s == null) {
       return false;
     }
     return double.tryParse(s) != null;
   }
-
-
 
   Widget _buildLoginBtn() {
     return Container(
@@ -319,7 +293,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         height: 30.0,
                       ),
                       _buildPasswordTF(),
-                      _buildRememberMeCheckbox(),
                       _buildLoginBtn(),
                     ],
                   ),

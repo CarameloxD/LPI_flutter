@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sistema_presencas/items/classItem.dart';
+import '../main.dart';
 import 'NavBar.dart';
 import 'package:intl/intl.dart';
 
@@ -77,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "studentNumber");
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/$number'));
+        .get(Uri.parse(SERVER_IP + 'student/$number'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       await storage.write(key: 'name', value: jsonResponse['user']['name']);
@@ -90,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final storage = new FlutterSecureStorage();
     var number = await storage.read(key: "studentNumber");
     final response = await http.get(Uri.parse(
-        'http://10.0.2.2:8081/api/v1/student/getSchedulesByStudent/$number/'));
+        SERVER_IP + '/student/getSchedulesByStudent/$number'));
     print(response.body);
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);

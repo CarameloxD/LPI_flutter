@@ -5,6 +5,8 @@ import 'package:select_form_field/select_form_field.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
+import '../../main.dart';
+
 class insertSchedule extends StatefulWidget {
   @override
   _insertScheduleState createState() => _insertScheduleState();
@@ -27,7 +29,7 @@ class _insertScheduleState extends State<insertSchedule> {
   Future<int> attemptInsert(String idClass, String idClassroom,
       String startingTime, String endingTime, BuildContext context) async {
     final response =
-        await http.post(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/'),
+        await http.post(Uri.parse(SERVER_IP + 'schedule/'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -188,7 +190,7 @@ class _insertScheduleState extends State<insertSchedule> {
 
   getClasses() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/class/'));
+        await http.get(Uri.parse(SERVER_IP + 'class/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       List<dynamic> classes = jsonResponse['classes'];
@@ -203,7 +205,7 @@ class _insertScheduleState extends State<insertSchedule> {
 
   getClassrooms() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/classroom/'));
+        await http.get(Uri.parse(SERVER_IP + 'classroom/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       List<dynamic> classrooms = jsonResponse['classrooms'];

@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart'as http;
 
+import '../main.dart';
+
 class Scanner extends StatefulWidget {
   @override
   _ScannerState createState() => _ScannerState();
@@ -77,7 +79,8 @@ class _ScannerState extends State<Scanner> {
       var number = await storage.read(key: "studentNumber");
 
       final response = await http.post(
-          Uri.parse('http://10.0.2.2:8081/api/v1/attendance/insertAttendanceByStudent'),
+          Uri.parse(
+              SERVER_IP + 'attendance/insertAttendanceByStudent'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

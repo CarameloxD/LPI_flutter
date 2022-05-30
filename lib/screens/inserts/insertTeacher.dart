@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../main.dart';
+
 class insertTeacher extends StatefulWidget {
   @override
   _insertTeacherState createState() => _insertTeacherState();
@@ -20,7 +22,7 @@ class _insertTeacherState extends State<insertTeacher> {
     print(email);
     print(username);
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/teacher/'),
+        Uri.parse(SERVER_IP + 'teacher/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

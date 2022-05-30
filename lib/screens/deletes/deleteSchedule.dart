@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:select_form_field/select_form_field.dart';
 
+import '../../main.dart';
+
 class deleteSchedule extends StatefulWidget {
   @override
   _deleteScheduleState createState() => _deleteScheduleState();
@@ -30,7 +32,7 @@ class _deleteScheduleState extends State<deleteSchedule> {
     });
     final response = await http.delete(
         Uri.parse(
-            'http://10.0.2.2:8081/api/v1/schedule/delete'),
+            SERVER_IP + 'schedule/delete'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -133,7 +135,7 @@ class _deleteScheduleState extends State<deleteSchedule> {
   }
   getClasses() async {
     final response =
-    await http.get(Uri.parse('http://10.0.2.2:8081/api/v1/class/'));
+    await http.get(Uri.parse(SERVER_IP + 'class/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       List<dynamic> classes = jsonResponse['classes'];
@@ -149,7 +151,7 @@ class _deleteScheduleState extends State<deleteSchedule> {
 
   getSchedules(String id) async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/schedule/getSchedulesByClass/$id/'));
+        .get(Uri.parse(SERVER_IP + 'schedule/getSchedulesByClass/$id'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);

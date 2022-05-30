@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../../main.dart';
 import '../NavBar.dart';
 
 class insertClassroom extends StatefulWidget {
@@ -17,7 +18,7 @@ class _insertClassroomState extends State<insertClassroom> {
   Future<int> attemptInsert(
       int identifier, int capacity, BuildContext context) async {
     final response = await http.post(
-        Uri.parse('http://10.0.2.2:8081/api/v1/classroom/'),
+        Uri.parse(SERVER_IP + 'classroom/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

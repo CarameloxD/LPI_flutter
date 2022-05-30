@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../main.dart';
+
 class deleteStudent extends StatefulWidget {
   @override
   _deleteStudentState createState() => _deleteStudentState();
@@ -20,7 +22,7 @@ class _deleteStudentState extends State<deleteStudent> {
   Future<int> attemptDelete(String id, BuildContext context) async {
 
     final response = await http.delete(
-        Uri.parse('http://10.0.2.2:8081/api/v1/student/$id'),
+        Uri.parse(SERVER_IP + 'student/$id'),
     );
     print("tou maninho?");
     print(response.statusCode);
@@ -93,7 +95,7 @@ class _deleteStudentState extends State<deleteStudent> {
 
   getStudents() async {
     final response = await http
-        .get(Uri.parse('http://10.0.2.2:8081/api/v1/student/'));
+        .get(Uri.parse(SERVER_IP + 'student/'));
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       print(jsonResponse);
