@@ -94,9 +94,9 @@ class _HomeScreenTeacherState extends State<HomeScreenTeacher> {
 
   getSchedulesByTeacher() async {
     final storage = new FlutterSecureStorage();
-    var number = await storage.read(key: "teacher");
+    var username = await storage.read(key: "teacher");
     final response = await http.get(Uri.parse(
-        SERVER_IP + 'teacher/getSchedulesByTeacher/$number'));
+        SERVER_IP + 'teacher/getSchedulesByTeacher/$username'));
     print(response.body);
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);

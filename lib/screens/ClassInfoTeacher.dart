@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:sistema_presencas/items/classStudents.dart';
 
 import 'inserts/insertAttendanceTeacher.dart';
 
 class ClassInfoTeacher extends StatelessWidget {
   final int id, identifier;
   final DateTime startingTime, endingTime;
-  final String name, type,teacher;
+  final String name, type, teacher;
 
   ClassInfoTeacher(
       {required this.id,
-        required this.identifier,
-        required this.startingTime,
-        required this.endingTime,
-        required this.name,
-        required this.type,
-        required this.teacher});
+      required this.identifier,
+      required this.startingTime,
+      required this.endingTime,
+      required this.name,
+      required this.type,
+      required this.teacher});
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +37,17 @@ class ClassInfoTeacher extends StatelessWidget {
                 Expanded(
                     child: Center(
                         child: Text(
-                          "Subject: ",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ))),
+                  "Subject: ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ))),
                 VerticalDivider(width: 0.5),
                 Expanded(
                     child: Center(
-                      child: Text(name),
-                    )),
+                  child: Text(name),
+                )),
               ],
             ),
             Padding(
@@ -58,17 +59,17 @@ class ClassInfoTeacher extends StatelessWidget {
                 Expanded(
                     child: Center(
                         child: Text(
-                          "Type: ",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ))),
+                  "Type: ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ))),
                 VerticalDivider(width: 0.5),
                 Expanded(
                     child: Center(
-                      child: Text(type),
-                    )),
+                  child: Text(type),
+                )),
               ],
             ),
             Padding(
@@ -80,12 +81,12 @@ class ClassInfoTeacher extends StatelessWidget {
                 Expanded(
                     child: Center(
                         child: Text(
-                          "Teacher: ",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ))),
+                  "Teacher: ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ))),
                 VerticalDivider(width: 0.5),
                 Expanded(child: Center(child: Text(teacher))),
               ],
@@ -99,24 +100,24 @@ class ClassInfoTeacher extends StatelessWidget {
                 Expanded(
                     child: Center(
                         child: Text(
-                          "Class Time: ",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ))),
+                  "Class Time: ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ))),
                 VerticalDivider(width: 0.5),
                 Expanded(
                     child: Center(
                         child: Text(
-                          startingTime.hour.toString() +
-                              ":" +
-                              startingTime.minute.toString() +
-                              " - " +
-                              endingTime.hour.toString() +
-                              ":" +
-                              endingTime.minute.toString(),
-                        ))),
+                  startingTime.hour.toString() +
+                      ":" +
+                      startingTime.minute.toString() +
+                      " - " +
+                      endingTime.hour.toString() +
+                      ":" +
+                      endingTime.minute.toString(),
+                ))),
               ],
             ),
             Padding(
@@ -128,16 +129,34 @@ class ClassInfoTeacher extends StatelessWidget {
                 Expanded(
                     child: Center(
                         child: Text(
-                          "Classroom: ",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ))),
+                  "Classroom: ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ))),
                 VerticalDivider(width: 0.5),
                 Expanded(child: Center(child: Text(identifier.toString()))),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 50.0),
+                ),
               ],
             ),
+            ButtonTheme(
+              minWidth: 100.0,
+              height: 50.0,
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          classStudents(idSchedule: id.toString())));
+                },
+                color: Colors.blue,
+                textColor: Colors.white,
+                child: Text('Show Class Students',
+                    style: TextStyle(fontSize: 15)),
+              ),
+            )
           ],
         ),
       ),
@@ -146,7 +165,8 @@ class ClassInfoTeacher extends StatelessWidget {
         child: RaisedButton(
           onPressed: () {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => insertAttendanceTeacher(idSchedule: id.toString())));
+                builder: (BuildContext context) =>
+                    insertAttendanceTeacher(idSchedule: id.toString())));
           },
           color: Colors.blue,
           textColor: Colors.white,
